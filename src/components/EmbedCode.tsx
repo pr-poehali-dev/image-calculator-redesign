@@ -1,14 +1,49 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
-const EmbedCode = () => {
+interface CalculatorTexts {
+  title: string;
+  subtitle: string;
+  amountLabel: string;
+  daysLabel: string;
+  amountHint: string;
+  daysHint: string;
+  button1Text: string;
+  button2Text: string;
+}
+
+interface EmbedCodeProps {
+  texts: CalculatorTexts;
+  colorScheme: string;
+  designStyle: string;
+}
+
+const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const cssCode = `#loan-calculator {
+  const colorSchemes: Record<string, { cssGradient: string; cssText: string; cssBorder: string }> = {
+    teal: { cssGradient: '#34d399, #14b8a6, #22d3ee', cssText: '#14b8a6', cssBorder: '#14b8a6' },
+    purple: { cssGradient: '#a78bfa, #8b5cf6, #6366f1', cssText: '#8b5cf6', cssBorder: '#8b5cf6' },
+    orange: { cssGradient: '#fb923c, #fbbf24, #facc15', cssText: '#f97316', cssBorder: '#f97316' },
+    pink: { cssGradient: '#f472b6, #fb7185, #ef4444', cssText: '#fb7185', cssBorder: '#fb7185' },
+    blue: { cssGradient: '#60a5fa, #38bdf8, #22d3ee', cssText: '#3b82f6', cssBorder: '#3b82f6' },
+    green: { cssGradient: '#4ade80, #34d399, #14b8a6', cssText: '#22c55e', cssBorder: '#22c55e' },
+  };
+
+  const designStyles: Record<string, { borderRadius: string }> = {
+    rounded: { borderRadius: '24px' },
+    sharp: { borderRadius: '8px' },
+    minimal: { borderRadius: '12px' },
+  };
+
+  const currentColor = colorSchemes[colorScheme] || colorSchemes.teal;
+  const currentStyle = designStyles[designStyle] || designStyles.rounded;
+
+  const cssCode = useMemo(() => `#loan-calculator {
   max-width: 672px !important;
   margin: 0 auto !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
@@ -18,8 +53,8 @@ const EmbedCode = () => {
   box-sizing: border-box !important;
 }
 #loan-calculator .loan-calc-header {
-  background: linear-gradient(to bottom right, #34d399, #14b8a6, #22d3ee) !important;
-  border-radius: 16px 16px 0 0 !important;
+  background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
+  border-radius: ${currentStyle.borderRadius} ${currentStyle.borderRadius} 0 0 !important;
   padding: 24px 20px !important;
   text-align: center !important;
 }
@@ -39,7 +74,7 @@ const EmbedCode = () => {
 }
 #loan-calculator .loan-calc-card {
   background: white !important;
-  border-radius: 0 0 16px 16px !important;
+  border-radius: 0 0 ${currentStyle.borderRadius} ${currentStyle.borderRadius} !important;
   padding: 20px !important;
   box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
 }
@@ -58,7 +93,7 @@ const EmbedCode = () => {
   color: #111827 !important;
 }
 #loan-calculator .loan-calc-value {
-  color: #14b8a6 !important;
+  color: ${currentColor.cssText} !important;
   font-size: 24px !important;
   font-weight: bold !important;
 }
@@ -89,19 +124,19 @@ const EmbedCode = () => {
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
-  background: linear-gradient(to bottom right, #14b8a6, #22d3ee) !important;
+  background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
   cursor: pointer !important;
   border: 3px solid white !important;
-  box-shadow: 0 4px 12px rgba(20,184,166,0.4) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
 }
 #loan-calculator .loan-calc-slider::-moz-range-thumb {
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
-  background: linear-gradient(to bottom right, #14b8a6, #22d3ee) !important;
+  background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
   cursor: pointer !important;
   border: 3px solid white !important;
-  box-shadow: 0 4px 12px rgba(20,184,166,0.4) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
 }
 #loan-calculator .loan-calc-hint {
   color: #9ca3af !important;
@@ -111,9 +146,9 @@ const EmbedCode = () => {
 #loan-calculator .loan-calc-btn {
   width: 100% !important;
   background: white !important;
-  color: #14b8a6 !important;
-  border: 3px solid #14b8a6 !important;
-  border-radius: 9999px !important;
+  color: ${currentColor.cssText} !important;
+  border: 3px solid ${currentColor.cssBorder} !important;
+  border-radius: ${currentStyle.borderRadius} !important;
   padding: 14px !important;
   font-size: 18px !important;
   font-weight: bold !important;
@@ -129,13 +164,13 @@ const EmbedCode = () => {
   background: #f0fdfa !important;
 }
 #loan-calculator .loan-calc-btn-primary {
-  background: linear-gradient(to right, #34d399, #14b8a6) !important;
+  background: linear-gradient(to right, ${currentColor.cssGradient}) !important;
   color: white !important;
   border: none !important;
   margin-bottom: 0 !important;
 }
 #loan-calculator .loan-calc-btn-primary:hover {
-  background: linear-gradient(to right, #10b981, #0d9488) !important;
+  opacity: 0.9 !important;
 }
 @media (min-width: 640px) {
   #loan-calculator .loan-calc-header {
@@ -217,36 +252,36 @@ const EmbedCode = () => {
     padding: 20px !important;
     font-size: 22px !important;
   }
-}`;
+}`, [colorScheme, designStyle]);
 
-  const htmlCode = `<div id="loan-calculator">
+  const htmlCode = useMemo(() => `<div id="loan-calculator">
   <div class="loan-calc-header">
-    <h1>Займ на карту</h1>
-    <p>Не выходя из дома</p>
+    <h1>${texts.title}</h1>
+    <p>${texts.subtitle}</p>
   </div>
   <div class="loan-calc-card">
     <div class="loan-calc-group">
       <div class="loan-calc-label">
-        <span>Сумма</span>
+        <span>${texts.amountLabel}</span>
         <span class="loan-calc-value" id="amount-value">16 000 ₽</span>
       </div>
       <input type="range" min="3000" max="20000" step="1000" value="16000" class="loan-calc-slider" id="amount-slider">
-      <div class="loan-calc-hint">Максимальная сумма: 20 000,00 ₽</div>
+      <div class="loan-calc-hint">${texts.amountHint}</div>
     </div>
     
     <div class="loan-calc-group">
       <div class="loan-calc-label">
-        <span>Срок</span>
+        <span>${texts.daysLabel}</span>
         <span class="loan-calc-value" id="days-value">10 дней</span>
       </div>
       <input type="range" min="7" max="15" step="1" value="10" class="loan-calc-slider" id="days-slider">
-      <div class="loan-calc-hint">Максимальный срок: 15 дней</div>
+      <div class="loan-calc-hint">${texts.daysHint}</div>
     </div>
     
-    <button class="loan-calc-btn" onclick="alert('Переход на госуслуги')">госуслуги</button>
-    <button class="loan-calc-btn loan-calc-btn-primary" onclick="alert('Оформление займа')">Получить <span id="total-amount">16 000,00</span> ₽</button>
+    <button class="loan-calc-btn" onclick="alert('Переход: ${texts.button1Text}')">${texts.button1Text}</button>
+    <button class="loan-calc-btn loan-calc-btn-primary" onclick="alert('Оформление займа')">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</button>
   </div>
-</div>`;
+</div>`, [texts]);
 
   const jsCode = `(function() {
   const amountSlider = document.getElementById('amount-slider');
@@ -278,7 +313,7 @@ const EmbedCode = () => {
   updateCalculator();
 })();`;
 
-  const fullCode = `<!-- КАЛЬКУЛЯТОР ЗАЙМОВ -->
+  const fullCode = useMemo(() => `<!-- КАЛЬКУЛЯТОР ЗАЙМОВ -->
 <style>
 ${cssCode}
 </style>
@@ -287,9 +322,7 @@ ${htmlCode}
 
 <script>
 ${jsCode}
-</script>`;
-
-
+</script>`, [cssCode, htmlCode, jsCode]);
 
   const copyToClipboard = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
