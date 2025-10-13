@@ -36,10 +36,11 @@ interface EmbedCodeProps {
   designStyle: string;
   calculatorWidth: number;
   sliderSize: number;
+  sliderTrackColor: string;
   loanParams: LoanParams;
 }
 
-const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSize, loanParams }: EmbedCodeProps) => {
+const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSize, sliderTrackColor, loanParams }: EmbedCodeProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
@@ -156,7 +157,7 @@ ${texts.headerImage ? `
 #loan-calculator .loan-calc-slider {
   width: 100% !important;
   height: ${8 * sliderSize / 100}px !important;
-  background: #d1d5db !important;
+  background: ${sliderTrackColor} !important;
   border-radius: 10px !important;
   outline: none !important;
   -webkit-appearance: none !important;
@@ -168,12 +169,12 @@ ${texts.headerImage ? `
 }
 #loan-calculator .loan-calc-slider::-webkit-slider-track {
   height: 8px !important;
-  background: #d1d5db !important;
+  background: ${sliderTrackColor} !important;
   border-radius: 10px !important;
 }
 #loan-calculator .loan-calc-slider::-moz-range-track {
   height: 8px !important;
-  background: #d1d5db !important;
+  background: ${sliderTrackColor} !important;
   border-radius: 10px !important;
   border: none !important;
 }

@@ -39,6 +39,7 @@ const Index = () => {
   const [designStyle, setDesignStyle] = useState('rounded');
   const [calculatorWidth, setCalculatorWidth] = useState(672);
   const [sliderSize, setSliderSize] = useState(100);
+  const [sliderTrackColor, setSliderTrackColor] = useState('#d1d5db');
   const [texts, setTexts] = useState<CalculatorTexts>({
     title: 'Займ на карту',
     subtitle: 'Не выходя из дома',
@@ -74,6 +75,7 @@ const Index = () => {
         if (settings.designStyle) setDesignStyle(settings.designStyle);
         if (settings.calculatorWidth) setCalculatorWidth(settings.calculatorWidth);
         if (settings.sliderSize) setSliderSize(settings.sliderSize);
+        if (settings.sliderTrackColor) setSliderTrackColor(settings.sliderTrackColor);
         if (settings.loanParams) setLoanParams(settings.loanParams);
       } catch (e) {
         console.error('Ошибка загрузки настроек:', e);
@@ -118,6 +120,8 @@ const Index = () => {
               onCalculatorWidthChange={setCalculatorWidth}
               sliderSize={sliderSize}
               onSliderSizeChange={setSliderSize}
+              sliderTrackColor={sliderTrackColor}
+              onSliderTrackColorChange={setSliderTrackColor}
               loanParams={loanParams}
               onLoanParamsChange={setLoanParams}
             />
@@ -131,6 +135,7 @@ const Index = () => {
               onDaysChange={setDays}
               calculatorWidth={calculatorWidth}
               sliderSize={sliderSize}
+              sliderTrackColor={sliderTrackColor}
               loanParams={loanParams}
             />
           </>
@@ -141,6 +146,7 @@ const Index = () => {
             designStyle={designStyle}
             calculatorWidth={calculatorWidth}
             sliderSize={sliderSize}
+            sliderTrackColor={sliderTrackColor}
             loanParams={loanParams}
           />
         )}

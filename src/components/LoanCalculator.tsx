@@ -37,10 +37,11 @@ interface LoanCalculatorProps {
   onDaysChange: (value: number) => void;
   calculatorWidth: number;
   sliderSize: number;
+  sliderTrackColor: string;
   loanParams: LoanParams;
 }
 
-const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, loanParams }: LoanCalculatorProps) => {
+const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, sliderTrackColor, loanParams }: LoanCalculatorProps) => {
   const colorSchemes: Record<string, { gradient: string; text: string; border: string }> = {
     teal: { gradient: 'from-emerald-400 via-teal-400 to-cyan-400', text: 'text-teal-500', border: 'border-teal-400' },
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
@@ -122,6 +123,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 step={loanParams.stepAmount}
                 className="w-full mb-3"
                 colorScheme={colorScheme}
+                trackColor={sliderTrackColor}
               />
             </div>
             <div className="text-sm sm:text-base text-gray-400">
@@ -145,6 +147,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 step={loanParams.stepDays}
                 className="w-full mb-3"
                 colorScheme={colorScheme}
+                trackColor={sliderTrackColor}
               />
             </div>
             <div className="text-sm sm:text-base text-gray-400">

@@ -42,6 +42,8 @@ interface CalculatorSettingsProps {
   onCalculatorWidthChange: (width: number) => void;
   sliderSize: number;
   onSliderSizeChange: (size: number) => void;
+  sliderTrackColor: string;
+  onSliderTrackColorChange: (color: string) => void;
   loanParams: LoanParams;
   onLoanParamsChange: (params: LoanParams) => void;
 }
@@ -89,6 +91,8 @@ const CalculatorSettings = ({
   onCalculatorWidthChange,
   sliderSize,
   onSliderSizeChange,
+  sliderTrackColor,
+  onSliderTrackColorChange,
   loanParams,
   onLoanParamsChange
 }: CalculatorSettingsProps) => {
@@ -121,6 +125,7 @@ const CalculatorSettings = ({
       designStyle,
       calculatorWidth,
       sliderSize,
+      sliderTrackColor,
       loanParams,
       savedAt: new Date().toISOString(),
     };
@@ -164,6 +169,7 @@ const CalculatorSettings = ({
     });
     onCalculatorWidthChange(672);
     onSliderSizeChange(100);
+    onSliderTrackColorChange('#d1d5db');
     
     toast({
       title: "🔄 Настройки сброшены",
@@ -266,6 +272,27 @@ const CalculatorSettings = ({
                   <span>70%</span>
                   <span>130%</span>
                 </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700 mb-2 block">Цвет полоски ползунка</Label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={sliderTrackColor}
+                    onChange={(e) => onSliderTrackColorChange(e.target.value)}
+                    className="h-10 w-20 rounded border-2 border-gray-300 cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-600">{sliderTrackColor}</span>
+                  <Button
+                    onClick={() => onSliderTrackColorChange('#d1d5db')}
+                    size="sm"
+                    variant="outline"
+                    className="ml-auto"
+                  >
+                    Сбросить
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Цвет трека (дорожки) ползунка</p>
               </div>
             </div>
           </div>
