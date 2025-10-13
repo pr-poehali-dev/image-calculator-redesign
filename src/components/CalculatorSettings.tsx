@@ -13,6 +13,8 @@ interface CalculatorTexts {
   daysHint: string;
   button1Text: string;
   button2Text: string;
+  button1Link: string;
+  button2Link: string;
 }
 
 interface CalculatorSettingsProps {
@@ -173,24 +175,50 @@ const CalculatorSettings = ({
                   className="mt-1"
                 />
               </div>
-              <div>
-                <Label htmlFor="button1Text" className="text-sm font-medium text-gray-700">Текст кнопки 1</Label>
-                <Input
-                  id="button1Text"
-                  value={texts.button1Text}
-                  onChange={(e) => handleTextChange('button1Text', e.target.value)}
-                  className="mt-1"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="button1Text" className="text-sm font-medium text-gray-700">Текст кнопки 1</Label>
+                  <Input
+                    id="button1Text"
+                    value={texts.button1Text}
+                    onChange={(e) => handleTextChange('button1Text', e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="button1Link" className="text-sm font-medium text-gray-700">Ссылка кнопки 1</Label>
+                  <Input
+                    id="button1Link"
+                    value={texts.button1Link}
+                    onChange={(e) => handleTextChange('button1Link', e.target.value)}
+                    className="mt-1"
+                    placeholder="https://example.com"
+                    type="url"
+                  />
+                </div>
               </div>
-              <div>
-                <Label htmlFor="button2Text" className="text-sm font-medium text-gray-700">Текст кнопки 2</Label>
-                <Input
-                  id="button2Text"
-                  value={texts.button2Text}
-                  onChange={(e) => handleTextChange('button2Text', e.target.value)}
-                  className="mt-1"
-                  placeholder="Получить"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="button2Text" className="text-sm font-medium text-gray-700">Текст кнопки 2</Label>
+                  <Input
+                    id="button2Text"
+                    value={texts.button2Text}
+                    onChange={(e) => handleTextChange('button2Text', e.target.value)}
+                    className="mt-1"
+                    placeholder="Получить"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="button2Link" className="text-sm font-medium text-gray-700">Ссылка кнопки 2</Label>
+                  <Input
+                    id="button2Link"
+                    value={texts.button2Link}
+                    onChange={(e) => handleTextChange('button2Link', e.target.value)}
+                    className="mt-1"
+                    placeholder="https://example.com"
+                    type="url"
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -10,6 +10,8 @@ interface CalculatorTexts {
   daysHint: string;
   button1Text: string;
   button2Text: string;
+  button1Link: string;
+  button2Link: string;
 }
 
 interface LoanCalculatorProps {
@@ -96,17 +98,39 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
             </div>
           </div>
 
-          <Button
-            className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} border-3 sm:border-4 ${currentColor.border} bg-white ${currentColor.text} hover:bg-opacity-10 transition-all duration-200 shadow-lg`}
-          >
-            {texts.button1Text}
-          </Button>
+          {texts.button1Link ? (
+            <a 
+              href={texts.button1Link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} border-3 sm:border-4 ${currentColor.border} bg-white ${currentColor.text} hover:bg-opacity-10 transition-all duration-200 shadow-lg flex items-center justify-center no-underline`}
+            >
+              {texts.button1Text}
+            </a>
+          ) : (
+            <Button
+              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} border-3 sm:border-4 ${currentColor.border} bg-white ${currentColor.text} hover:bg-opacity-10 transition-all duration-200 shadow-lg`}
+            >
+              {texts.button1Text}
+            </Button>
+          )}
 
-          <Button 
-            className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation`}
-          >
-            {texts.button2Text} {amount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
-          </Button>
+          {texts.button2Link ? (
+            <a 
+              href={texts.button2Link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation flex items-center justify-center no-underline`}
+            >
+              {texts.button2Text} {amount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
+            </a>
+          ) : (
+            <Button 
+              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation`}
+            >
+              {texts.button2Text} {amount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
+            </Button>
+          )}
         </div>
       </div>
     </div>

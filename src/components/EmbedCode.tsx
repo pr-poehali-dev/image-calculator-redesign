@@ -13,6 +13,8 @@ interface CalculatorTexts {
   daysHint: string;
   button1Text: string;
   button2Text: string;
+  button1Link: string;
+  button2Link: string;
 }
 
 interface EmbedCodeProps {
@@ -278,8 +280,12 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
       <div class="loan-calc-hint">${texts.daysHint}</div>
     </div>
     
-    <button class="loan-calc-btn" onclick="alert('Переход: ${texts.button1Text}')">${texts.button1Text}</button>
-    <button class="loan-calc-btn loan-calc-btn-primary" onclick="alert('Оформление займа')">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</button>
+    ${texts.button1Link 
+      ? `<a href="${texts.button1Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn">${texts.button1Text}</a>` 
+      : `<button class="loan-calc-btn">${texts.button1Text}</button>`}
+    ${texts.button2Link 
+      ? `<a href="${texts.button2Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</a>` 
+      : `<button class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</button>`}
   </div>
 </div>`, [texts]);
 

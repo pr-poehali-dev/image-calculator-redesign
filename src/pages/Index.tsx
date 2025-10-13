@@ -14,6 +14,8 @@ interface CalculatorTexts {
   daysHint: string;
   button1Text: string;
   button2Text: string;
+  button1Link: string;
+  button2Link: string;
 }
 
 const Index = () => {
@@ -31,6 +33,8 @@ const Index = () => {
     daysHint: 'Максимальный срок: 15 дней',
     button1Text: 'госуслуги',
     button2Text: 'Получить',
+    button1Link: '',
+    button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
   });
 
   return (
