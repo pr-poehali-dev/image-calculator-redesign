@@ -14,6 +14,17 @@ interface CalculatorTexts {
   button2Link: string;
 }
 
+interface LoanParams {
+  minAmount: number;
+  maxAmount: number;
+  stepAmount: number;
+  minDays: number;
+  maxDays: number;
+  stepDays: number;
+  interestRate: number;
+  calculateInterest: boolean;
+}
+
 interface LoanCalculatorProps {
   texts: CalculatorTexts;
   colorScheme: string;
@@ -24,9 +35,10 @@ interface LoanCalculatorProps {
   onDaysChange: (value: number) => void;
   calculatorWidth: number;
   sliderSize: number;
+  loanParams: LoanParams;
 }
 
-const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize }: LoanCalculatorProps) => {
+const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, loanParams }: LoanCalculatorProps) => {
   const colorSchemes: Record<string, { gradient: string; text: string; border: string }> = {
     teal: { gradient: 'from-emerald-400 via-teal-400 to-cyan-400', text: 'text-teal-500', border: 'border-teal-400' },
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
@@ -44,6 +56,15 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
 
   const currentColor = colorSchemes[colorScheme] || colorSchemes.teal;
   const currentStyle = designStyles[designStyle] || designStyles.rounded;
+
+  const calculateTotal = () => {
+    if (loanParams.calculateInterest) {
+      return amount + (amount * loanParams.interestRate / 100 * days);
+    }
+    return amount;
+  };
+
+  const total = calculateTotal();
 
   return (
     <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
@@ -76,9 +97,9 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
               <Slider
                 value={[amount]}
                 onValueChange={(value) => onAmountChange(value[0])}
-                min={3000}
-                max={20000}
-                step={1000}
+                min={loanParams.minAmount}
+                max={loanParams.maxAmount}
+                step={loanParams.stepAmount}
                 className="w-full mb-3"
                 colorScheme={colorScheme}
               />
@@ -99,9 +120,9 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
               <Slider
                 value={[days]}
                 onValueChange={(value) => onDaysChange(value[0])}
-                min={7}
-                max={15}
-                step={1}
+                min={loanParams.minDays}
+                max={loanParams.maxDays}
+                step={loanParams.stepDays}
                 className="w-full mb-3"
                 colorScheme={colorScheme}
               />
@@ -135,13 +156,13 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
               rel="noopener noreferrer"
               className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation flex items-center justify-center no-underline`}
             >
-              {texts.button2Text} {amount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
+              {texts.button2Text} {total.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
             </a>
           ) : (
             <Button 
               className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation`}
             >
-              {texts.button2Text} {amount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
+              {texts.button2Text} {total.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
             </Button>
           )}
         </div>

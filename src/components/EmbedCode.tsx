@@ -17,15 +17,27 @@ interface CalculatorTexts {
   button2Link: string;
 }
 
+interface LoanParams {
+  minAmount: number;
+  maxAmount: number;
+  stepAmount: number;
+  minDays: number;
+  maxDays: number;
+  stepDays: number;
+  interestRate: number;
+  calculateInterest: boolean;
+}
+
 interface EmbedCodeProps {
   texts: CalculatorTexts;
   colorScheme: string;
   designStyle: string;
   calculatorWidth: number;
   sliderSize: number;
+  loanParams: LoanParams;
 }
 
-const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSize }: EmbedCodeProps) => {
+const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSize, loanParams }: EmbedCodeProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
@@ -280,6 +292,9 @@ ${texts.headerImage ? `
   }
 }`, [colorScheme, designStyle, calculatorWidth, sliderSize, texts.headerImage]);
 
+  const defaultAmount = Math.min(16000, loanParams.maxAmount);
+  const defaultDays = Math.min(10, loanParams.maxDays);
+
   const htmlCode = useMemo(() => `<div id="loan-calculator">
   <div class="loan-calc-header">
     <h1>${texts.title}</h1>
@@ -289,18 +304,18 @@ ${texts.headerImage ? `
     <div class="loan-calc-group">
       <div class="loan-calc-label">
         <span>${texts.amountLabel}</span>
-        <span class="loan-calc-value" id="amount-value">16 000 ₽</span>
+        <span class="loan-calc-value" id="amount-value">${defaultAmount.toLocaleString('ru-RU')} ₽</span>
       </div>
-      <input type="range" min="3000" max="20000" step="1000" value="16000" class="loan-calc-slider" id="amount-slider">
+      <input type="range" min="${loanParams.minAmount}" max="${loanParams.maxAmount}" step="${loanParams.stepAmount}" value="${defaultAmount}" class="loan-calc-slider" id="amount-slider">
       <div class="loan-calc-hint">${texts.amountHint}</div>
     </div>
     
     <div class="loan-calc-group">
       <div class="loan-calc-label">
         <span>${texts.daysLabel}</span>
-        <span class="loan-calc-value" id="days-value">10 дней</span>
+        <span class="loan-calc-value" id="days-value">${defaultDays} дней</span>
       </div>
-      <input type="range" min="7" max="15" step="1" value="10" class="loan-calc-slider" id="days-slider">
+      <input type="range" min="${loanParams.minDays}" max="${loanParams.maxDays}" step="${loanParams.stepDays}" value="${defaultDays}" class="loan-calc-slider" id="days-slider">
       <div class="loan-calc-hint">${texts.daysHint}</div>
     </div>
     
@@ -308,10 +323,10 @@ ${texts.headerImage ? `
       ? `<a href="${texts.button1Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn">${texts.button1Text}</a>` 
       : `<button class="loan-calc-btn">${texts.button1Text}</button>`}
     ${texts.button2Link 
-      ? `<a href="${texts.button2Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</a>` 
-      : `<button class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</button>`}
+      ? `<a href="${texts.button2Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">${defaultAmount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> ₽</a>` 
+      : `<button class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">${defaultAmount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> ₽</button>`}
   </div>
-</div>`, [texts, calculatorWidth, sliderSize, colorScheme, designStyle]);
+</div>`, [texts, calculatorWidth, sliderSize, colorScheme, designStyle, loanParams]);
 
   const jsCode = `(function() {
   const amountSlider = document.getElementById('amount-slider');
@@ -319,6 +334,9 @@ ${texts.headerImage ? `
   const amountValue = document.getElementById('amount-value');
   const daysValue = document.getElementById('days-value');
   const totalAmount = document.getElementById('total-amount');
+  
+  const calculateInterest = ${loanParams.calculateInterest};
+  const interestRate = ${loanParams.interestRate};
   
   function formatNumber(num) {
     return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ' ');
@@ -328,13 +346,22 @@ ${texts.headerImage ? `
     return num.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g, ' ').replace('.', ',');
   }
   
+  function calculateTotal(amount, days) {
+    if (calculateInterest) {
+      return amount + (amount * interestRate / 100 * days);
+    }
+    return amount;
+  }
+  
   function updateCalculator() {
     const amount = parseInt(amountSlider.value);
     const days = parseInt(daysSlider.value);
     
     amountValue.textContent = formatNumber(amount) + ' ₽';
     daysValue.textContent = days + ' дней';
-    totalAmount.textContent = formatDecimal(amount);
+    
+    const total = calculateTotal(amount, days);
+    totalAmount.textContent = formatDecimal(total);
   }
   
   amountSlider.addEventListener('input', updateCalculator);

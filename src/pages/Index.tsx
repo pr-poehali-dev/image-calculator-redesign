@@ -19,6 +19,17 @@ interface CalculatorTexts {
   headerImage: string;
 }
 
+interface LoanParams {
+  minAmount: number;
+  maxAmount: number;
+  stepAmount: number;
+  minDays: number;
+  maxDays: number;
+  stepDays: number;
+  interestRate: number;
+  calculateInterest: boolean;
+}
+
 const Index = () => {
   const [showCode, setShowCode] = useState(false);
   const [amount, setAmount] = useState(16000);
@@ -40,6 +51,16 @@ const Index = () => {
     button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
     headerImage: '',
   });
+  const [loanParams, setLoanParams] = useState<LoanParams>({
+    minAmount: 3000,
+    maxAmount: 20000,
+    stepAmount: 1000,
+    minDays: 7,
+    maxDays: 15,
+    stepDays: 1,
+    interestRate: 1,
+    calculateInterest: true,
+  });
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
@@ -51,6 +72,7 @@ const Index = () => {
         if (settings.designStyle) setDesignStyle(settings.designStyle);
         if (settings.calculatorWidth) setCalculatorWidth(settings.calculatorWidth);
         if (settings.sliderSize) setSliderSize(settings.sliderSize);
+        if (settings.loanParams) setLoanParams(settings.loanParams);
       } catch (e) {
         console.error('Ошибка загрузки настроек:', e);
       }
@@ -94,6 +116,8 @@ const Index = () => {
               onCalculatorWidthChange={setCalculatorWidth}
               sliderSize={sliderSize}
               onSliderSizeChange={setSliderSize}
+              loanParams={loanParams}
+              onLoanParamsChange={setLoanParams}
             />
             <LoanCalculator
               texts={texts}
@@ -105,6 +129,7 @@ const Index = () => {
               onDaysChange={setDays}
               calculatorWidth={calculatorWidth}
               sliderSize={sliderSize}
+              loanParams={loanParams}
             />
           </>
         ) : (
@@ -114,6 +139,7 @@ const Index = () => {
             designStyle={designStyle}
             calculatorWidth={calculatorWidth}
             sliderSize={sliderSize}
+            loanParams={loanParams}
           />
         )}
       </div>

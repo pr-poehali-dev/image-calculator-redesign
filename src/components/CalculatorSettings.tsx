@@ -19,6 +19,17 @@ interface CalculatorTexts {
   headerImage: string;
 }
 
+interface LoanParams {
+  minAmount: number;
+  maxAmount: number;
+  stepAmount: number;
+  minDays: number;
+  maxDays: number;
+  stepDays: number;
+  interestRate: number;
+  calculateInterest: boolean;
+}
+
 interface CalculatorSettingsProps {
   texts: CalculatorTexts;
   onTextsChange: (texts: CalculatorTexts) => void;
@@ -30,6 +41,8 @@ interface CalculatorSettingsProps {
   onCalculatorWidthChange: (width: number) => void;
   sliderSize: number;
   onSliderSizeChange: (size: number) => void;
+  loanParams: LoanParams;
+  onLoanParamsChange: (params: LoanParams) => void;
 }
 
 const colorSchemes = [
@@ -57,7 +70,9 @@ const CalculatorSettings = ({
   calculatorWidth,
   onCalculatorWidthChange,
   sliderSize,
-  onSliderSizeChange
+  onSliderSizeChange,
+  loanParams,
+  onLoanParamsChange
 }: CalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -88,6 +103,7 @@ const CalculatorSettings = ({
       designStyle,
       calculatorWidth,
       sliderSize,
+      loanParams,
       savedAt: new Date().toISOString(),
     };
     
@@ -117,6 +133,16 @@ const CalculatorSettings = ({
     });
     onColorSchemeChange('teal');
     onDesignStyleChange('rounded');
+    onLoanParamsChange({
+      minAmount: 3000,
+      maxAmount: 20000,
+      stepAmount: 1000,
+      minDays: 7,
+      maxDays: 15,
+      stepDays: 1,
+      interestRate: 1,
+      calculateInterest: true,
+    });
     onCalculatorWidthChange(672);
     onSliderSizeChange(100);
     
@@ -220,6 +246,111 @@ const CalculatorSettings = ({
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>70%</span>
                   <span>130%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Calculator" size={20} />
+              Параметры займа
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <Label className="text-sm font-medium text-gray-700">Расчёт процентов</Label>
+                <button
+                  onClick={() => onLoanParamsChange({ ...loanParams, calculateInterest: !loanParams.calculateInterest })}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    loanParams.calculateInterest ? 'bg-teal-500' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      loanParams.calculateInterest ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+              
+              {loanParams.calculateInterest && (
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Процентная ставка (% в день): {loanParams.interestRate}%</Label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value={loanParams.interestRate}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, interestRate: Number(e.target.value) })}
+                    className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Мин. сумма</Label>
+                  <Input
+                    type="number"
+                    min="100"
+                    value={loanParams.minAmount}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, minAmount: Number(e.target.value) })}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Макс. сумма</Label>
+                  <Input
+                    type="number"
+                    min={loanParams.minAmount}
+                    value={loanParams.maxAmount}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, maxAmount: Number(e.target.value) })}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Шаг суммы</Label>
+                  <Input
+                    type="number"
+                    min="100"
+                    value={loanParams.stepAmount}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, stepAmount: Number(e.target.value) })}
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Мин. срок (дней)</Label>
+                  <Input
+                    type="number"
+                    min="1"
+                    value={loanParams.minDays}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, minDays: Number(e.target.value) })}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Макс. срок (дней)</Label>
+                  <Input
+                    type="number"
+                    min={loanParams.minDays}
+                    value={loanParams.maxDays}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, maxDays: Number(e.target.value) })}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Шаг срока</Label>
+                  <Input
+                    type="number"
+                    min="1"
+                    value={loanParams.stepDays}
+                    onChange={(e) => onLoanParamsChange({ ...loanParams, stepDays: Number(e.target.value) })}
+                    className="mt-1"
+                  />
                 </div>
               </div>
             </div>
