@@ -55,9 +55,26 @@ const colorSchemes = [
 ];
 
 const designStyles = [
-  { id: 'rounded', name: 'Закруглённый', preview: 'rounded-3xl' },
-  { id: 'sharp', name: 'Острые углы', preview: 'rounded-lg' },
-  { id: 'minimal', name: 'Минимализм', preview: 'rounded-xl' },
+  { id: 'rounded', name: 'Закруглённый', gradient: 'from-emerald-400 to-teal-400', borderRadius: 'rounded-3xl', shadow: 'shadow-2xl' },
+  { id: 'sharp', name: 'Острые углы', gradient: 'from-slate-400 to-gray-400', borderRadius: 'rounded-lg', shadow: 'shadow-xl' },
+  { id: 'minimal', name: 'Минимализм', gradient: 'from-gray-300 to-gray-400', borderRadius: 'rounded-xl', shadow: 'shadow-lg' },
+  { id: 'gradient-modern', name: 'Градиент Modern', gradient: 'from-purple-500 via-pink-500 to-red-500', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'neon', name: 'Неон', gradient: 'from-cyan-400 via-blue-500 to-purple-600', borderRadius: 'rounded-3xl', shadow: 'shadow-[0_0_30px_rgba(0,200,255,0.5)]' },
+  { id: 'sunset', name: 'Закат', gradient: 'from-orange-400 via-pink-500 to-purple-600', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'ocean', name: 'Океан', gradient: 'from-blue-400 via-cyan-400 to-teal-500', borderRadius: 'rounded-3xl', shadow: 'shadow-xl' },
+  { id: 'forest', name: 'Лес', gradient: 'from-green-500 via-emerald-500 to-teal-600', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'fire', name: 'Огонь', gradient: 'from-red-500 via-orange-500 to-yellow-400', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'pastel', name: 'Пастель', gradient: 'from-pink-200 via-purple-200 to-indigo-200', borderRadius: 'rounded-3xl', shadow: 'shadow-lg' },
+  { id: 'dark', name: 'Тёмный', gradient: 'from-gray-800 via-gray-900 to-black', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'gold', name: 'Золото', gradient: 'from-yellow-400 via-amber-500 to-orange-400', borderRadius: 'rounded-2xl', shadow: 'shadow-[0_0_20px_rgba(255,200,0,0.4)]' },
+  { id: 'silver', name: 'Серебро', gradient: 'from-gray-300 via-slate-400 to-zinc-400', borderRadius: 'rounded-2xl', shadow: 'shadow-xl' },
+  { id: 'candy', name: 'Конфета', gradient: 'from-pink-400 via-rose-400 to-red-400', borderRadius: 'rounded-3xl', shadow: 'shadow-2xl' },
+  { id: 'mint', name: 'Мята', gradient: 'from-green-300 via-emerald-300 to-teal-400', borderRadius: 'rounded-3xl', shadow: 'shadow-lg' },
+  { id: 'lavender', name: 'Лаванда', gradient: 'from-purple-300 via-violet-300 to-indigo-400', borderRadius: 'rounded-3xl', shadow: 'shadow-lg' },
+  { id: 'retro', name: 'Ретро', gradient: 'from-yellow-300 via-orange-400 to-red-400', borderRadius: 'rounded-lg', shadow: 'shadow-xl' },
+  { id: 'cyber', name: 'Киберпанк', gradient: 'from-fuchsia-500 via-cyan-400 to-yellow-400', borderRadius: 'rounded-xl', shadow: 'shadow-[0_0_40px_rgba(255,0,255,0.5)]' },
+  { id: 'premium', name: 'Премиум', gradient: 'from-indigo-600 via-purple-600 to-pink-600', borderRadius: 'rounded-2xl', shadow: 'shadow-2xl' },
+  { id: 'classic', name: 'Классика', gradient: 'from-blue-500 to-blue-700', borderRadius: 'rounded-xl', shadow: 'shadow-xl' },
 ];
 
 const CalculatorSettings = ({ 
@@ -189,22 +206,22 @@ const CalculatorSettings = ({
 
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Icon name="Layout" size={20} />
-              Стиль дизайна
+              <Icon name="Sparkles" size={20} />
+              Готовые дизайны (20 вариантов)
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {designStyles.map((style) => (
                 <button
                   key={style.id}
                   onClick={() => onDesignStyleChange(style.id)}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-3 rounded-xl border-2 transition-all ${
                     designStyle === style.id
-                      ? 'border-gray-900 shadow-md'
+                      ? 'border-gray-900 shadow-lg scale-105'
                       : 'border-gray-200 hover:border-gray-400'
                   }`}
                 >
-                  <div className={`h-12 bg-gray-200 ${style.preview} mb-2`}></div>
-                  <div className="text-sm font-medium text-gray-700">{style.name}</div>
+                  <div className={`h-16 bg-gradient-to-r ${style.gradient} ${style.borderRadius} ${style.shadow} mb-2`}></div>
+                  <div className="text-xs font-medium text-gray-700 text-center">{style.name}</div>
                 </button>
               ))}
             </div>

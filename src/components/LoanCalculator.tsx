@@ -48,14 +48,32 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
     green: { gradient: 'from-green-400 via-emerald-400 to-teal-400', text: 'text-green-500', border: 'border-green-400' },
   };
 
-  const designStyles: Record<string, { rounded: string; roundedTop: string; roundedBottom: string }> = {
-    rounded: { rounded: 'rounded-3xl', roundedTop: 'rounded-t-2xl sm:rounded-t-3xl', roundedBottom: 'rounded-b-2xl sm:rounded-b-3xl' },
-    sharp: { rounded: 'rounded-lg', roundedTop: 'rounded-t-lg', roundedBottom: 'rounded-b-lg' },
-    minimal: { rounded: 'rounded-xl', roundedTop: 'rounded-t-xl', roundedBottom: 'rounded-b-xl' },
+  const designStyles: Record<string, { gradient: string; rounded: string; roundedTop: string; roundedBottom: string; shadow: string }> = {
+    rounded: { gradient: 'from-emerald-400 to-teal-400', rounded: 'rounded-3xl', roundedTop: 'rounded-t-2xl sm:rounded-t-3xl', roundedBottom: 'rounded-b-2xl sm:rounded-b-3xl', shadow: 'shadow-2xl' },
+    sharp: { gradient: 'from-slate-400 to-gray-400', rounded: 'rounded-lg', roundedTop: 'rounded-t-lg', roundedBottom: 'rounded-b-lg', shadow: 'shadow-xl' },
+    minimal: { gradient: 'from-gray-300 to-gray-400', rounded: 'rounded-xl', roundedTop: 'rounded-t-xl', roundedBottom: 'rounded-b-xl', shadow: 'shadow-lg' },
+    'gradient-modern': { gradient: 'from-purple-500 via-pink-500 to-red-500', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    neon: { gradient: 'from-cyan-400 via-blue-500 to-purple-600', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-[0_0_30px_rgba(0,200,255,0.5)]' },
+    sunset: { gradient: 'from-orange-400 via-pink-500 to-purple-600', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    ocean: { gradient: 'from-blue-400 via-cyan-400 to-teal-500', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-xl' },
+    forest: { gradient: 'from-green-500 via-emerald-500 to-teal-600', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    fire: { gradient: 'from-red-500 via-orange-500 to-yellow-400', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    pastel: { gradient: 'from-pink-200 via-purple-200 to-indigo-200', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-lg' },
+    dark: { gradient: 'from-gray-800 via-gray-900 to-black', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    gold: { gradient: 'from-yellow-400 via-amber-500 to-orange-400', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-[0_0_20px_rgba(255,200,0,0.4)]' },
+    silver: { gradient: 'from-gray-300 via-slate-400 to-zinc-400', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-xl' },
+    candy: { gradient: 'from-pink-400 via-rose-400 to-red-400', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-2xl' },
+    mint: { gradient: 'from-green-300 via-emerald-300 to-teal-400', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-lg' },
+    lavender: { gradient: 'from-purple-300 via-violet-300 to-indigo-400', rounded: 'rounded-3xl', roundedTop: 'rounded-t-3xl', roundedBottom: 'rounded-b-3xl', shadow: 'shadow-lg' },
+    retro: { gradient: 'from-yellow-300 via-orange-400 to-red-400', rounded: 'rounded-lg', roundedTop: 'rounded-t-lg', roundedBottom: 'rounded-b-lg', shadow: 'shadow-xl' },
+    cyber: { gradient: 'from-fuchsia-500 via-cyan-400 to-yellow-400', rounded: 'rounded-xl', roundedTop: 'rounded-t-xl', roundedBottom: 'rounded-b-xl', shadow: 'shadow-[0_0_40px_rgba(255,0,255,0.5)]' },
+    premium: { gradient: 'from-indigo-600 via-purple-600 to-pink-600', rounded: 'rounded-2xl', roundedTop: 'rounded-t-2xl', roundedBottom: 'rounded-b-2xl', shadow: 'shadow-2xl' },
+    classic: { gradient: 'from-blue-500 to-blue-700', rounded: 'rounded-xl', roundedTop: 'rounded-t-xl', roundedBottom: 'rounded-b-xl', shadow: 'shadow-xl' },
   };
 
   const currentColor = colorSchemes[colorScheme] || colorSchemes.teal;
   const currentStyle = designStyles[designStyle] || designStyles.rounded;
+  const headerGradient = currentStyle.gradient;
 
   const calculateTotal = () => {
     if (loanParams.calculateInterest) {
@@ -68,7 +86,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
 
   return (
     <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
-      <div className={`bg-gradient-to-br ${currentColor.gradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden`}>
         {texts.headerImage && (
           <div className="absolute inset-0 opacity-30">
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
@@ -84,7 +102,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
         </div>
       </div>
 
-      <div className={`bg-white ${currentStyle.roundedBottom} shadow-2xl p-5 sm:p-8 md:p-10`}>
+      <div className={`bg-white ${currentStyle.roundedBottom} ${currentStyle.shadow} p-5 sm:p-8 md:p-10`}>
         <div className="space-y-6 sm:space-y-8">
           <div>
             <div className="flex justify-between items-center mb-3 sm:mb-4">
