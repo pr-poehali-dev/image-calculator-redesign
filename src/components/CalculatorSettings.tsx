@@ -413,14 +413,14 @@ const CalculatorSettings = ({
                 
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4">
                   {[
-                    { url: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800', name: 'Деньги' },
-                    { url: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800', name: 'Финансы' },
-                    { url: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=800', name: 'Монеты' },
-                    { url: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=800', name: 'Карта' },
-                    { url: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800', name: 'Банк' },
-                    { url: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800', name: 'График' },
-                    { url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800', name: 'Успех' },
-                    { url: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800', name: 'Рост' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/29/12/13/dollar-1869143_960_720.jpg', name: 'Деньги' },
+                    { url: 'https://cdn.pixabay.com/photo/2017/08/06/12/06/businesswoman-2589164_960_720.jpg', name: 'Финансы' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/08/05/29/bitcoins-1807380_960_720.jpg', name: 'Монеты' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/29/12/15/credit-card-1869140_960_720.jpg', name: 'Карта' },
+                    { url: 'https://cdn.pixabay.com/photo/2017/08/06/09/00/architecture-2588433_960_720.jpg', name: 'Банк' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_960_720.jpg', name: 'График' },
+                    { url: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/woman-865111_960_720.jpg', name: 'Успех' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/27/21/42/arrow-1863380_960_720.jpg', name: 'Рост' },
                   ].map((image, idx) => (
                     <button
                       key={idx}
