@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор займов</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .calculator-wrapper { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #6366f1 100%); border-radius: 24px; padding: 40px 30px; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3); }
+    .header::before { content: '%'; position: absolute; right: 30px; top: 50%; transform: translateY(-50%); font-size: 100px; font-weight: bold; color: rgba(255,255,255,0.2); }
+    .header h1 { color: white; font-size: 32px; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
+    .header p { color: rgba(255,255,255,0.9); font-size: 16px; position: relative; z-index: 1; }
+    .card { background: white; border-radius: 24px; padding: 40px 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .slider-group { background: linear-gradient(135deg, #f9fafb 0%, #e0f2fe 100%); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .slider-label span { color: #6b7280; font-size: 16px; font-weight: 500; }
+    .slider-value { color: #111827; font-size: 28px; font-weight: 700; }
+    .slider { width: 100%; height: 12px; border-radius: 10px; background: linear-gradient(to right, #dbeafe, #bfdbfe); outline: none; -webkit-appearance: none; position: relative; }
+    .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #2563eb); cursor: pointer; border: 4px solid white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); transition: transform 0.2s; }
+    .slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .slider::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #2563eb); cursor: pointer; border: 4px solid white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+    .slider-range { display: flex; justify-content: space-between; margin-top: 8px; color: #9ca3af; font-size: 13px; }
+    .time-block { text-align: center; padding: 20px 0; }
+    .time-label { color: #6b7280; font-size: 14px; margin-bottom: 8px; }
+    .time-value { color: #111827; font-size: 36px; font-weight: 700; }
+    .info-grid { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+    .info-header { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .info-icon { width: 24px; height: 24px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold; }
+    .info-title { font-size: 18px; font-weight: 700; color: #111827; }
+    .info-row { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-flex { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .info-col { flex: 1; }
+    .info-label { color: #6b7280; font-size: 12px; margin-bottom: 4px; }
+    .info-amount { color: #111827; font-size: 28px; font-weight: 700; }
+    .info-amount.green { color: #16a34a; }
+    .info-old { color: #9ca3af; font-size: 16px; text-decoration: line-through; margin-top: 4px; }
+    .savings-block { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); border-radius: 12px; padding: 20px; color: white; }
+    .savings-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; opacity: 0.9; }
+    .savings-value { font-size: 32px; font-weight: 700; }
+    .btn { width: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 16px; padding: 20px; font-size: 20px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5); }
+    .footer { text-align: center; margin-top: 24px; color: #6b7280; font-size: 13px; line-height: 1.6; }
+    @media (max-width: 640px) {
+      .calculator-wrapper { padding: 12px; }
+      .header { padding: 24px 20px; border-radius: 16px; }
+      .header h1 { font-size: 24px; }
+      .header p { font-size: 14px; }
+      .header::before { font-size: 60px; right: 20px; }
+      .card { padding: 20px; border-radius: 16px; }
+      .slider-group { padding: 16px; }
+      .slider-value { font-size: 22px; }
+      .info-amount { font-size: 22px; }
+      .savings-value { font-size: 26px; }
+      .btn { font-size: 16px; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-wrapper">
+    <div class="header">
+      <h1>Первый заём бесплатно!*</h1>
+      <p>При условии возврата в срок</p>
+    </div>
+
+    <div class="card">
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Сумма</span>
+          <span class="slider-value" id="amountValue">15 000 ₽</span>
+        </div>
+        <input type="range" min="3000" max="30000" step="1000" value="15000" class="slider" id="amountSlider">
+        <div class="slider-range">
+          <span>3 000</span>
+          <span>30 000</span>
+        </div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Срок</span>
+          <span class="slider-value" id="daysValue">7 дней</span>
+        </div>
+        <input type="range" min="7" max="30" step="1" value="7" class="slider" id="daysSlider">
+        <div class="slider-range">
+          <span>7</span>
+          <span>30</span>
+        </div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-label">⏰ Деньги у вас уже в</div>
+        <div class="time-value">12:56</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-header">
+          <div class="info-icon">✓</div>
+          <div class="info-title">Условия возврата</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-flex">
+            <div class="info-col">
+              <div class="info-label">Сумма займа</div>
+              <div class="info-amount" id="loanAmount">15 000 ₽</div>
+            </div>
+            <div style="color: #d1d5db; font-size: 24px;">→</div>
+            <div class="info-col" style="text-align: right;">
+              <div class="info-label">Вы возвращаете</div>
+              <div class="info-amount green" id="returnAmount">15 000 ₽</div>
+              <div class="info-old" id="oldAmount">было 15 105 ₽</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="background: #dbeafe; border-radius: 12px; padding: 12px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+              📅
+            </div>
+            <div style="flex: 1;">
+              <div class="info-label">Дата возврата</div>
+              <div class="info-amount" id="returnDate" style="font-size: 24px;">20 октября</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="savings-block">
+          <div style="display: flex; align-items: start; gap: 12px;">
+            <div style="font-size: 24px;">✨</div>
+            <div style="flex: 1;">
+              <div class="savings-label">Экономия при возврате в срок:</div>
+              <div class="savings-value" id="savingsAmount">105 ₽</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="alert('Здесь будет переход на форму заявки')">Получить бесплатно</button>
+    </div>
+
+    <div class="footer">
+      * Первый заём предоставляется без процентов при условии возврата в установленный срок.<br>
+      При просрочке начисляются проценты согласно тарифам.
+    </div>
+  </div>
+
+  <script>
+    const amountSlider = document.getElementById('amountSlider');
+    const daysSlider = document.getElementById('daysSlider');
+    const amountValue = document.getElementById('amountValue');
+    const daysValue = document.getElementById('daysValue');
+    const loanAmount = document.getElementById('loanAmount');
+    const returnAmount = document.getElementById('returnAmount');
+    const oldAmount = document.getElementById('oldAmount');
+    const returnDate = document.getElementById('returnDate');
+    const savingsAmount = document.getElementById('savingsAmount');
+
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function getDaysWord(days) {
+      if (days === 1) return 'день';
+      if (days >= 2 && days <= 4) return 'дня';
+      return 'дней';
+    }
+
+    function getReturnDate(days) {
+      const date = new Date();
+      date.setDate(date.getDate() + days);
+      const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+      return date.getDate() + ' ' + months[date.getMonth()];
+    }
+
+    function calculate() {
+      const amount = parseInt(amountSlider.value);
+      const days = parseInt(daysSlider.value);
+      const interest = Math.round(amount * 0.01 * days);
+      const total = amount + interest;
+
+      amountValue.textContent = formatNumber(amount) + ' ₽';
+      daysValue.textContent = days + ' ' + getDaysWord(days);
+      loanAmount.textContent = formatNumber(amount) + ' ₽';
+      returnAmount.textContent = formatNumber(amount) + ' ₽';
+      oldAmount.textContent = 'было ' + formatNumber(total) + ' ₽';
+      returnDate.textContent = getReturnDate(days);
+      savingsAmount.textContent = formatNumber(interest) + ' ₽';
+    }
+
+    amountSlider.addEventListener('input', calculate);
+    daysSlider.addEventListener('input', calculate);
+
+    calculate();
+  </script>
+</body>
+</html>
