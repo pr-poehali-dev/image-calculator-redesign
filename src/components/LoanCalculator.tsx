@@ -96,16 +96,6 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
           </div>
         )}
         <div className="relative z-10">
-          {days === 7 && (
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-xl border-2 border-white/50 inline-block mb-4 sm:float-right sm:ml-4 sm:mt-2">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-green-500 to-emerald-600 bg-clip-text text-transparent leading-tight">
-                0%
-              </div>
-              <div className="text-xs sm:text-sm font-bold text-red-600 mt-1 whitespace-nowrap">
-                НА 7 ДНЕЙ
-              </div>
-            </div>
-          )}
           <div className="text-center sm:text-left">
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
               {texts.title}
