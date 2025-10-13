@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
+import { useToast } from '@/hooks/use-toast';
 
 interface CalculatorTexts {
   title: string;
@@ -50,9 +51,50 @@ const CalculatorSettings = ({
   onDesignStyleChange 
 }: CalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleTextChange = (field: keyof CalculatorTexts, value: string) => {
     onTextsChange({ ...texts, [field]: value });
+  };
+
+  const handleSaveDesign = () => {
+    const settings = {
+      texts,
+      colorScheme,
+      designStyle,
+      savedAt: new Date().toISOString(),
+    };
+    
+    localStorage.setItem('calculatorSettings', JSON.stringify(settings));
+    
+    toast({
+      title: "✅ Дизайн сохранён!",
+      description: "Все настройки успешно сохранены",
+    });
+  };
+
+  const handleResetDesign = () => {
+    localStorage.removeItem('calculatorSettings');
+    
+    onTextsChange({
+      title: 'Займ на карту',
+      subtitle: 'Не выходя из дома',
+      amountLabel: 'Сумма',
+      daysLabel: 'Срок',
+      amountHint: 'Максимальная сумма: 20 000,00 ₽',
+      daysHint: 'Максимальный срок: 15 дней',
+      button1Text: 'госуслуги',
+      button2Text: 'Получить',
+      button1Link: '',
+      button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
+    });
+    onColorSchemeChange('teal');
+    onDesignStyleChange('rounded');
+    
+    toast({
+      title: "🔄 Настройки сброшены",
+      description: "Восстановлены значения по умолчанию",
+    });
   };
 
   return (
@@ -220,6 +262,26 @@ const CalculatorSettings = ({
                   />
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-gray-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button
+                onClick={handleSaveDesign}
+                className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white hover:from-emerald-500 hover:to-teal-500 flex items-center justify-center gap-2"
+              >
+                <Icon name="Save" size={20} />
+                Сохранить дизайн
+              </Button>
+              <Button
+                onClick={handleResetDesign}
+                variant="outline"
+                className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2"
+              >
+                <Icon name="RotateCcw" size={20} />
+                Сбросить
+              </Button>
             </div>
           </div>
         </div>

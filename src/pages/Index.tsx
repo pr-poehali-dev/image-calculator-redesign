@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoanCalculator from '@/components/LoanCalculator';
 import CalculatorSettings from '@/components/CalculatorSettings';
 import EmbedCode from '@/components/EmbedCode';
@@ -36,6 +36,20 @@ const Index = () => {
     button1Link: '',
     button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
   });
+
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('calculatorSettings');
+    if (savedSettings) {
+      try {
+        const settings = JSON.parse(savedSettings);
+        if (settings.texts) setTexts(settings.texts);
+        if (settings.colorScheme) setColorScheme(settings.colorScheme);
+        if (settings.designStyle) setDesignStyle(settings.designStyle);
+      } catch (e) {
+        console.error('Ошибка загрузки настроек:', e);
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 py-4 sm:py-8 md:py-12 px-3 sm:px-4">
