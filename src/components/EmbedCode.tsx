@@ -311,7 +311,7 @@ ${texts.headerImage ? `
       ? `<a href="${texts.button2Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</a>` 
       : `<button class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">16 000,00</span> ₽</button>`}
   </div>
-</div>`, [texts]);
+</div>`, [texts, calculatorWidth, sliderSize, colorScheme, designStyle]);
 
   const jsCode = `(function() {
   const amountSlider = document.getElementById('amount-slider');
