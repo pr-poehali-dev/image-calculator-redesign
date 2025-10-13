@@ -21,9 +21,11 @@ interface EmbedCodeProps {
   texts: CalculatorTexts;
   colorScheme: string;
   designStyle: string;
+  calculatorWidth: number;
+  sliderSize: number;
 }
 
-const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
+const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSize }: EmbedCodeProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
@@ -46,7 +48,7 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
   const currentStyle = designStyles[designStyle] || designStyles.rounded;
 
   const cssCode = useMemo(() => `#loan-calculator {
-  max-width: 672px !important;
+  max-width: ${calculatorWidth}px !important;
   margin: 0 auto !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   box-sizing: border-box !important;
@@ -59,6 +61,26 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
   border-radius: ${currentStyle.borderRadius} ${currentStyle.borderRadius} 0 0 !important;
   padding: 24px 20px !important;
   text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+${texts.headerImage ? `
+#loan-calculator .loan-calc-header::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-image: url('${texts.headerImage}') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  opacity: 0.3 !important;
+  z-index: 0 !important;
+}` : ''}
+#loan-calculator .loan-calc-header * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 #loan-calculator .loan-calc-header h1 {
   color: white !important;
@@ -101,7 +123,7 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
 }
 #loan-calculator .loan-calc-slider {
   width: 100% !important;
-  height: 8px !important;
+  height: ${8 * sliderSize / 100}px !important;
   background: #d1d5db !important;
   border-radius: 10px !important;
   outline: none !important;
@@ -109,6 +131,8 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
   appearance: none !important;
   cursor: pointer !important;
   margin: 8px 0 !important;
+  transform: scaleY(${sliderSize / 100}) !important;
+  transform-origin: left center !important;
 }
 #loan-calculator .loan-calc-slider::-webkit-slider-track {
   height: 8px !important;
@@ -123,21 +147,21 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
 }
 #loan-calculator .loan-calc-slider::-webkit-slider-thumb {
   -webkit-appearance: none !important;
-  width: 36px !important;
-  height: 36px !important;
+  width: ${36 * sliderSize / 100}px !important;
+  height: ${36 * sliderSize / 100}px !important;
   border-radius: 50% !important;
   background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
   cursor: pointer !important;
-  border: 3px solid white !important;
+  border: ${3 * sliderSize / 100}px solid white !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
 }
 #loan-calculator .loan-calc-slider::-moz-range-thumb {
-  width: 36px !important;
-  height: 36px !important;
+  width: ${36 * sliderSize / 100}px !important;
+  height: ${36 * sliderSize / 100}px !important;
   border-radius: 50% !important;
   background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
   cursor: pointer !important;
-  border: 3px solid white !important;
+  border: ${3 * sliderSize / 100}px solid white !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
 }
 #loan-calculator .loan-calc-hint {
@@ -254,7 +278,7 @@ const EmbedCode = ({ texts, colorScheme, designStyle }: EmbedCodeProps) => {
     padding: 20px !important;
     font-size: 22px !important;
   }
-}`, [colorScheme, designStyle]);
+}`, [colorScheme, designStyle, calculatorWidth, sliderSize, texts.headerImage]);
 
   const htmlCode = useMemo(() => `<div id="loan-calculator">
   <div class="loan-calc-header">

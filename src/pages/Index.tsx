@@ -16,6 +16,7 @@ interface CalculatorTexts {
   button2Text: string;
   button1Link: string;
   button2Link: string;
+  headerImage: string;
 }
 
 const Index = () => {
@@ -24,6 +25,8 @@ const Index = () => {
   const [days, setDays] = useState(10);
   const [colorScheme, setColorScheme] = useState('teal');
   const [designStyle, setDesignStyle] = useState('rounded');
+  const [calculatorWidth, setCalculatorWidth] = useState(672);
+  const [sliderSize, setSliderSize] = useState(100);
   const [texts, setTexts] = useState<CalculatorTexts>({
     title: 'Займ на карту',
     subtitle: 'Не выходя из дома',
@@ -35,6 +38,7 @@ const Index = () => {
     button2Text: 'Получить',
     button1Link: '',
     button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
+    headerImage: '',
   });
 
   useEffect(() => {
@@ -45,6 +49,8 @@ const Index = () => {
         if (settings.texts) setTexts(settings.texts);
         if (settings.colorScheme) setColorScheme(settings.colorScheme);
         if (settings.designStyle) setDesignStyle(settings.designStyle);
+        if (settings.calculatorWidth) setCalculatorWidth(settings.calculatorWidth);
+        if (settings.sliderSize) setSliderSize(settings.sliderSize);
       } catch (e) {
         console.error('Ошибка загрузки настроек:', e);
       }
@@ -84,6 +90,10 @@ const Index = () => {
               onColorSchemeChange={setColorScheme}
               designStyle={designStyle}
               onDesignStyleChange={setDesignStyle}
+              calculatorWidth={calculatorWidth}
+              onCalculatorWidthChange={setCalculatorWidth}
+              sliderSize={sliderSize}
+              onSliderSizeChange={setSliderSize}
             />
             <LoanCalculator
               texts={texts}
@@ -93,6 +103,8 @@ const Index = () => {
               days={days}
               onAmountChange={setAmount}
               onDaysChange={setDays}
+              calculatorWidth={calculatorWidth}
+              sliderSize={sliderSize}
             />
           </>
         ) : (
@@ -100,6 +112,8 @@ const Index = () => {
             texts={texts}
             colorScheme={colorScheme}
             designStyle={designStyle}
+            calculatorWidth={calculatorWidth}
+            sliderSize={sliderSize}
           />
         )}
       </div>

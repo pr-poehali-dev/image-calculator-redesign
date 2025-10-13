@@ -22,9 +22,11 @@ interface LoanCalculatorProps {
   days: number;
   onAmountChange: (value: number) => void;
   onDaysChange: (value: number) => void;
+  calculatorWidth: number;
+  sliderSize: number;
 }
 
-const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange }: LoanCalculatorProps) => {
+const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize }: LoanCalculatorProps) => {
   const colorSchemes: Record<string, { gradient: string; text: string; border: string }> = {
     teal: { gradient: 'from-emerald-400 via-teal-400 to-cyan-400', text: 'text-teal-500', border: 'border-teal-400' },
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
@@ -44,14 +46,21 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
   const currentStyle = designStyles[designStyle] || designStyles.rounded;
 
   return (
-    <div className="w-full max-w-2xl mx-auto touch-manipulation">
-      <div className={`bg-gradient-to-br ${currentColor.gradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center`}>
-        <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
-          {texts.title}
-        </h1>
-        <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
-          {texts.subtitle}
-        </p>
+    <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
+      <div className={`bg-gradient-to-br ${currentColor.gradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden`}>
+        {texts.headerImage && (
+          <div className="absolute inset-0 opacity-30">
+            <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
+          </div>
+        )}
+        <div className="relative z-10">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
+            {texts.title}
+          </h1>
+          <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
+            {texts.subtitle}
+          </p>
+        </div>
       </div>
 
       <div className={`bg-white ${currentStyle.roundedBottom} shadow-2xl p-5 sm:p-8 md:p-10`}>
@@ -63,15 +72,17 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 {amount.toLocaleString('ru-RU')} ₽
               </div>
             </div>
-            <Slider
-              value={[amount]}
-              onValueChange={(value) => onAmountChange(value[0])}
-              min={3000}
-              max={20000}
-              step={1000}
-              className="w-full mb-3"
-              colorScheme={colorScheme}
-            />
+            <div style={{ transform: `scale(${sliderSize / 100})`, transformOrigin: 'left center' }}>
+              <Slider
+                value={[amount]}
+                onValueChange={(value) => onAmountChange(value[0])}
+                min={3000}
+                max={20000}
+                step={1000}
+                className="w-full mb-3"
+                colorScheme={colorScheme}
+              />
+            </div>
             <div className="text-sm sm:text-base text-gray-400">
               {texts.amountHint}
             </div>
@@ -84,15 +95,17 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 {days} дней
               </div>
             </div>
-            <Slider
-              value={[days]}
-              onValueChange={(value) => onDaysChange(value[0])}
-              min={7}
-              max={15}
-              step={1}
-              className="w-full mb-3"
-              colorScheme={colorScheme}
-            />
+            <div style={{ transform: `scale(${sliderSize / 100})`, transformOrigin: 'left center' }}>
+              <Slider
+                value={[days]}
+                onValueChange={(value) => onDaysChange(value[0])}
+                min={7}
+                max={15}
+                step={1}
+                className="w-full mb-3"
+                colorScheme={colorScheme}
+              />
+            </div>
             <div className="text-sm sm:text-base text-gray-400">
               {texts.daysHint}
             </div>

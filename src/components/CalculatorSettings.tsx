@@ -16,6 +16,7 @@ interface CalculatorTexts {
   button2Text: string;
   button1Link: string;
   button2Link: string;
+  headerImage: string;
 }
 
 interface CalculatorSettingsProps {
@@ -25,6 +26,10 @@ interface CalculatorSettingsProps {
   onColorSchemeChange: (scheme: string) => void;
   designStyle: string;
   onDesignStyleChange: (style: string) => void;
+  calculatorWidth: number;
+  onCalculatorWidthChange: (width: number) => void;
+  sliderSize: number;
+  onSliderSizeChange: (size: number) => void;
 }
 
 const colorSchemes = [
@@ -48,7 +53,11 @@ const CalculatorSettings = ({
   colorScheme, 
   onColorSchemeChange,
   designStyle,
-  onDesignStyleChange 
+  onDesignStyleChange,
+  calculatorWidth,
+  onCalculatorWidthChange,
+  sliderSize,
+  onSliderSizeChange
 }: CalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -57,11 +66,28 @@ const CalculatorSettings = ({
     onTextsChange({ ...texts, [field]: value });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onTextsChange({ ...texts, headerImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    onTextsChange({ ...texts, headerImage: '' });
+  };
+
   const handleSaveDesign = () => {
     const settings = {
       texts,
       colorScheme,
       designStyle,
+      calculatorWidth,
+      sliderSize,
       savedAt: new Date().toISOString(),
     };
     
@@ -87,9 +113,12 @@ const CalculatorSettings = ({
       button2Text: 'Получить',
       button1Link: '',
       button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
+      headerImage: '',
     });
     onColorSchemeChange('teal');
     onDesignStyleChange('rounded');
+    onCalculatorWidthChange(672);
+    onSliderSizeChange(100);
     
     toast({
       title: "🔄 Настройки сброшены",
@@ -157,10 +186,82 @@ const CalculatorSettings = ({
 
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Icon name="Type" size={20} />
-              Тексты
+              <Icon name="Sliders" size={20} />
+              Размеры
             </h3>
             <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Ширина калькулятора: {calculatorWidth}px</Label>
+                <input
+                  type="range"
+                  min="300"
+                  max="1200"
+                  step="10"
+                  value={calculatorWidth}
+                  onChange={(e) => onCalculatorWidthChange(Number(e.target.value))}
+                  className="w-full mt-2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>300px</span>
+                  <span>1200px</span>
+                </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Размер ползунков: {sliderSize}%</Label>
+                <input
+                  type="range"
+                  min="70"
+                  max="130"
+                  step="5"
+                  value={sliderSize}
+                  onChange={(e) => onSliderSizeChange(Number(e.target.value))}
+                  className="w-full mt-2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>70%</span>
+                  <span>130%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Type" size={20} />
+              Тексты и изображение
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700 mb-2 block">Изображение в шапке</Label>
+                {texts.headerImage ? (
+                  <div className="relative">
+                    <img src={texts.headerImage} alt="Header" className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
+                    <Button
+                      onClick={handleRemoveImage}
+                      size="sm"
+                      variant="destructive"
+                      className="absolute top-2 right-2"
+                    >
+                      <Icon name="X" size={16} />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                    <input
+                      type="file"
+                      id="headerImage"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <label htmlFor="headerImage" className="cursor-pointer">
+                      <Icon name="Upload" size={32} className="mx-auto text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-600">Нажмите для загрузки изображения</p>
+                      <p className="text-xs text-gray-400 mt-1">JPG, PNG до 5MB</p>
+                    </label>
+                  </div>
+                )}
+              </div>
               <div>
                 <Label htmlFor="title" className="text-sm font-medium text-gray-700">Заголовок</Label>
                 <Input
