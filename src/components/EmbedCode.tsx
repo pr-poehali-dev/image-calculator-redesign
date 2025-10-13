@@ -79,7 +79,9 @@ const EmbedCode = () => {
   background: #d1d5db; 
   outline: none; 
   -webkit-appearance: none; 
+  appearance: none;
   margin: 8px 0; 
+  cursor: pointer;
 }
 
 .loan-calc-slider::-webkit-slider-track { 
@@ -88,12 +90,19 @@ const EmbedCode = () => {
   border-radius: 10px; 
 }
 
+.loan-calc-slider::-moz-range-track {
+  height: 8px;
+  background: #d1d5db;
+  border-radius: 10px;
+  border: none;
+}
+
 .loan-calc-slider::-webkit-slider-thumb { 
   -webkit-appearance: none; 
   width: 40px; 
   height: 40px; 
   border-radius: 50%; 
-  background: linear-gradient(135deg, #14b8a6, #22d3ee); 
+  background: #14b8a6;
   cursor: pointer; 
   border: 4px solid white; 
   box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
@@ -103,7 +112,7 @@ const EmbedCode = () => {
   width: 40px; 
   height: 40px; 
   border-radius: 50%; 
-  background: linear-gradient(135deg, #14b8a6, #22d3ee); 
+  background: #14b8a6;
   cursor: pointer; 
   border: 4px solid white; 
   box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
