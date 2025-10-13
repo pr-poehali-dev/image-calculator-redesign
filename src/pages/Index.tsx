@@ -8,7 +8,7 @@ const Index = () => {
   const [showCode, setShowCode] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 py-2 sm:py-5 md:py-8 px-2 sm:px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-4 sm:py-8 md:py-12 px-3 sm:px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-2 sm:mb-4">
           <div className="inline-flex bg-white rounded-full p-1 shadow-lg">
