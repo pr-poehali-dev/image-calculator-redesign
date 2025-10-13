@@ -15,6 +15,7 @@ interface CalculatorTexts {
   button2Text: string;
   button1Link: string;
   button2Link: string;
+  headerImage?: string;
 }
 
 interface LoanParams {
