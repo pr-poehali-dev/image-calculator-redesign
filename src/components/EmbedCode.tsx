@@ -8,27 +8,35 @@ const EmbedCode = () => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const tildaCode = `<!-- Вставьте в блок T123 (HTML код) на Tilda -->
-<div id="loan-calculator-tilda" style="width:100%;max-width:800px;margin:0 auto;padding:20px;"></div>
+  const tildaCode = `<style>
+.loan-calc-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.loan-calc-frame {
+  width: 100%;
+  height: 1000px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+@media (max-width: 768px) {
+  .loan-calc-frame {
+    height: 1100px;
+  }
+}
+</style>
 
-<script>
-(function(){
-  var iframe = document.createElement('iframe');
-  iframe.src = 'https://ваш-сайт.ru/calculator';
-  iframe.style.width = '100%';
-  iframe.style.border = 'none';
-  iframe.style.minHeight = '800px';
-  iframe.style.borderRadius = '16px';
-  iframe.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
-  document.getElementById('loan-calculator-tilda').appendChild(iframe);
-  
-  window.addEventListener('message', function(e) {
-    if (e.data.type === 'resize') {
-      iframe.style.height = e.data.height + 'px';
-    }
-  });
-})();
-</script>`;
+<div class="loan-calc-container">
+  <iframe 
+    src="ВСТАВЬТЕ_ССЫЛКУ_НА_ВАШ_САЙТ_ЗДЕСЬ" 
+    class="loan-calc-frame"
+    frameborder="0"
+    scrolling="no">
+  </iframe>
+</div>`;
 
   const embedCode = `<!-- Универсальная вставка для любого сайта -->
 <div id="loan-calculator-widget"></div>
@@ -110,17 +118,45 @@ jQuery(document).ready(function($){
             {tildaCode}
           </pre>
         </div>
-        <div className="mt-4 p-3 bg-white rounded-lg border border-orange-200">
-          <div className="flex items-start gap-2">
-            <Icon name="AlertCircle" size={16} className="text-orange-500 mt-0.5 shrink-0" />
-            <div className="text-sm text-gray-700">
-              <p className="font-semibold mb-1">Инструкция для Tilda:</p>
-              <ol className="list-decimal list-inside space-y-1 text-xs">
-                <li>Добавьте блок T123 (HTML код)</li>
-                <li>Вставьте скопированный код</li>
-                <li>Замените 'ваш-сайт.ru' на ваш URL</li>
-                <li>Сохраните и опубликуйте страницу</li>
-              </ol>
+        <div className="mt-4 space-y-3">
+          <div className="p-4 bg-white rounded-lg border-2 border-orange-300">
+            <div className="flex items-start gap-2 mb-2">
+              <Icon name="AlertCircle" size={18} className="text-orange-600 mt-0.5 shrink-0" />
+              <p className="font-bold text-gray-900">Пошаговая инструкция для Tilda:</p>
+            </div>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700 ml-6">
+              <li className="pl-2">
+                <span className="font-semibold">Опубликуйте калькулятор</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">В редакторе poehali.dev нажмите "Опубликовать" и скопируйте URL</p>
+              </li>
+              <li className="pl-2">
+                <span className="font-semibold">Откройте редактор Tilda</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">Перейдите на страницу, куда хотите добавить калькулятор</p>
+              </li>
+              <li className="pl-2">
+                <span className="font-semibold">Добавьте блок T123</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">Нажмите "Добавить блок" → "Другое" → найдите "T123 HTML-код"</p>
+              </li>
+              <li className="pl-2">
+                <span className="font-semibold">Вставьте код</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">Скопируйте код выше и вставьте в блок T123</p>
+              </li>
+              <li className="pl-2">
+                <span className="font-semibold">Замените ссылку</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">Найдите <code className="bg-orange-100 px-1 rounded">ВСТАВЬТЕ_ССЫЛКУ_НА_ВАШ_САЙТ_ЗДЕСЬ</code> и замените на ваш URL</p>
+              </li>
+              <li className="pl-2">
+                <span className="font-semibold">Сохраните и опубликуйте</span>
+                <p className="text-xs text-gray-600 mt-0.5 ml-6">Нажмите "Сохранить" и "Опубликовать" страницу</p>
+              </li>
+            </ol>
+          </div>
+          
+          <div className="p-3 bg-orange-100 rounded-lg flex items-start gap-2">
+            <Icon name="Lightbulb" size={16} className="text-orange-600 mt-0.5 shrink-0" />
+            <div className="text-xs text-gray-700">
+              <p className="font-semibold mb-1">Совет:</p>
+              <p>Если калькулятор обрезается, увеличьте значение <code className="bg-white px-1 rounded">height: 1000px</code> в коде</p>
             </div>
           </div>
         </div>
