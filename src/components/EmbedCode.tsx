@@ -8,29 +8,52 @@ const EmbedCode = () => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const embedCode = `<!-- Калькулятор займов -->
-<div id="loan-calculator-widget"></div>
-<script src="https://cdn.jsdelivr.net/gh/yourusername/loan-calculator@latest/widget.min.js"></script>
+  const tildaCode = `<!-- Вставьте в блок T123 (HTML код) на Tilda -->
+<div id="loan-calculator-tilda" style="width:100%;max-width:800px;margin:0 auto;padding:20px;"></div>
+
 <script>
-  LoanCalculator.init({
-    container: '#loan-calculator-widget',
-    minAmount: 3000,
-    maxAmount: 30000,
-    minDays: 7,
-    maxDays: 30,
-    interestRate: 0.01
+(function(){
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://ваш-сайт.ru/calculator';
+  iframe.style.width = '100%';
+  iframe.style.border = 'none';
+  iframe.style.minHeight = '800px';
+  iframe.style.borderRadius = '16px';
+  iframe.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+  document.getElementById('loan-calculator-tilda').appendChild(iframe);
+  
+  window.addEventListener('message', function(e) {
+    if (e.data.type === 'resize') {
+      iframe.style.height = e.data.height + 'px';
+    }
   });
+})();
 </script>`;
 
-  const reactCode = `import LoanCalculator from '@/components/LoanCalculator';
+  const embedCode = `<!-- Универсальная вставка для любого сайта -->
+<div id="loan-calculator-widget"></div>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+  // Вставьте ссылку на ваш опубликованный сайт
+  var calculatorUrl = 'https://ваш-сайт.ru';
+  var div = document.getElementById('loan-calculator-widget');
+  var iframe = document.createElement('iframe');
+  iframe.src = calculatorUrl;
+  iframe.style.cssText = 'width:100%;border:none;min-height:900px;border-radius:16px';
+  div.appendChild(iframe);
+</script>`;
 
-function App() {
-  return (
-    <div>
-      <LoanCalculator />
-    </div>
+  const wordpressCode = `<!-- Для WordPress: вставьте в HTML блок -->
+<div id="loan-calculator-wp"></div>
+<script>
+jQuery(document).ready(function($){
+  $('#loan-calculator-wp').html(
+    '<iframe src="https://ваш-сайт.ru" style="width:100%;border:none;min-height:900px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.1)"></iframe>'
   );
-}`;
+});
+</script>`;
 
   const copyToClipboard = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
@@ -52,6 +75,56 @@ function App() {
           Скопируйте код и вставьте на свой сайт
         </p>
       </div>
+
+      <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="bg-orange-500 rounded-lg p-2">
+              <Icon name="Layout" size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900">Tilda</h3>
+              <p className="text-xs text-gray-600">Блок T123 (HTML)</p>
+            </div>
+          </div>
+          <Button
+            onClick={() => copyToClipboard(tildaCode, 'Tilda')}
+            className="gap-2 bg-orange-500 hover:bg-orange-600"
+            size="sm"
+          >
+            {copied ? (
+              <>
+                <Icon name="Check" size={16} />
+                <span className="hidden sm:inline">Скопировано</span>
+              </>
+            ) : (
+              <>
+                <Icon name="Copy" size={16} />
+                <span className="hidden sm:inline">Копировать</span>
+              </>
+            )}
+          </Button>
+        </div>
+        <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto">
+          <pre className="text-xs md:text-sm text-orange-400 font-mono whitespace-pre">
+            {tildaCode}
+          </pre>
+        </div>
+        <div className="mt-4 p-3 bg-white rounded-lg border border-orange-200">
+          <div className="flex items-start gap-2">
+            <Icon name="AlertCircle" size={16} className="text-orange-500 mt-0.5 shrink-0" />
+            <div className="text-sm text-gray-700">
+              <p className="font-semibold mb-1">Инструкция для Tilda:</p>
+              <ol className="list-decimal list-inside space-y-1 text-xs">
+                <li>Добавьте блок T123 (HTML код)</li>
+                <li>Вставьте скопированный код</li>
+                <li>Замените 'ваш-сайт.ru' на ваш URL</li>
+                <li>Сохраните и опубликуйте страницу</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </Card>
 
       <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-white">
         <div className="flex items-center justify-between mb-4">
@@ -86,22 +159,26 @@ function App() {
         <div className="mt-4 p-3 bg-blue-50 rounded-lg">
           <p className="text-sm text-gray-700">
             <Icon name="Info" size={16} className="inline mr-1 text-blue-500" />
-            Вставьте этот код в любое место HTML страницы, где хотите отобразить калькулятор
+            Вставьте этот код в любое место HTML страницы
           </p>
         </div>
       </Card>
 
-      <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-white">
+      <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Icon name="Braces" size={24} className="text-purple-500" />
-            <h3 className="text-lg md:text-xl font-bold text-gray-900">React компонент</h3>
+            <div className="bg-blue-500 rounded-lg p-2">
+              <Icon name="FileText" size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900">WordPress</h3>
+              <p className="text-xs text-gray-600">HTML блок</p>
+            </div>
           </div>
           <Button
-            onClick={() => copyToClipboard(reactCode, 'React')}
-            variant="outline"
+            onClick={() => copyToClipboard(wordpressCode, 'WordPress')}
+            className="gap-2 bg-blue-500 hover:bg-blue-600"
             size="sm"
-            className="gap-2"
           >
             <Icon name="Copy" size={16} />
             <span className="hidden sm:inline">Копировать</span>
@@ -109,13 +186,13 @@ function App() {
         </div>
         <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto">
           <pre className="text-xs md:text-sm text-blue-400 font-mono whitespace-pre">
-            {reactCode}
+            {wordpressCode}
           </pre>
         </div>
-        <div className="mt-4 p-3 bg-purple-50 rounded-lg">
+        <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
           <p className="text-sm text-gray-700">
-            <Icon name="Info" size={16} className="inline mr-1 text-purple-500" />
-            Для React проектов просто импортируйте компонент LoanCalculator
+            <Icon name="Info" size={16} className="inline mr-1 text-blue-500" />
+            Добавьте HTML блок в редакторе WordPress и вставьте код
           </p>
         </div>
       </Card>
@@ -125,15 +202,31 @@ function App() {
           <div className="bg-green-500 rounded-full p-2">
             <Icon name="Lightbulb" size={20} className="text-white" />
           </div>
-          <div>
-            <h4 className="font-bold text-gray-900 mb-2">Параметры настройки:</h4>
-            <ul className="space-y-1 text-sm text-gray-700">
-              <li><code className="bg-white px-2 py-0.5 rounded text-xs">minAmount</code> - минимальная сумма займа</li>
-              <li><code className="bg-white px-2 py-0.5 rounded text-xs">maxAmount</code> - максимальная сумма займа</li>
-              <li><code className="bg-white px-2 py-0.5 rounded text-xs">minDays</code> - минимальный срок в днях</li>
-              <li><code className="bg-white px-2 py-0.5 rounded text-xs">maxDays</code> - максимальный срок в днях</li>
-              <li><code className="bg-white px-2 py-0.5 rounded text-xs">interestRate</code> - процентная ставка (0.01 = 1%)</li>
-            </ul>
+          <div className="flex-1">
+            <h4 className="font-bold text-gray-900 mb-3">Перед вставкой кода:</h4>
+            <div className="space-y-2 text-sm text-gray-700">
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="MousePointerClick" size={16} className="text-green-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">1. Опубликуйте калькулятор</p>
+                  <p className="text-xs text-gray-600">Нажмите "Опубликовать" в редакторе poehali.dev</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="Link" size={16} className="text-green-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">2. Скопируйте URL</p>
+                  <p className="text-xs text-gray-600">Замените 'ваш-сайт.ru' на ваш реальный URL</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="Code" size={16} className="text-green-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">3. Вставьте код</p>
+                  <p className="text-xs text-gray-600">Используйте подходящий код для вашей платформы</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Card>
