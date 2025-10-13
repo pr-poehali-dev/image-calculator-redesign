@@ -17,6 +17,7 @@ interface CalculatorTexts {
   button1Link: string;
   button2Link: string;
   headerImage: string;
+  headerImageOpacity: number;
 }
 
 interface LoanParams {
@@ -50,6 +51,7 @@ const Index = () => {
     button1Link: '',
     button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
     headerImage: '',
+    headerImageOpacity: 30,
   });
   const [loanParams, setLoanParams] = useState<LoanParams>({
     minAmount: 3000,

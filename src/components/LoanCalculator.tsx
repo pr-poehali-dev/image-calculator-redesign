@@ -12,6 +12,8 @@ interface CalculatorTexts {
   button2Text: string;
   button1Link: string;
   button2Link: string;
+  headerImage?: string;
+  headerImageOpacity?: number;
 }
 
 interface LoanParams {
@@ -88,7 +90,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
     <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
       <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden`}>
         {texts.headerImage && (
-          <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0" style={{ opacity: (texts.headerImageOpacity || 30) / 100 }}>
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
           </div>
         )}

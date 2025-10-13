@@ -17,6 +17,7 @@ interface CalculatorTexts {
   button1Link: string;
   button2Link: string;
   headerImage: string;
+  headerImageOpacity: number;
 }
 
 interface LoanParams {
@@ -94,7 +95,7 @@ const CalculatorSettings = ({
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleTextChange = (field: keyof CalculatorTexts, value: string) => {
+  const handleTextChange = (field: keyof CalculatorTexts, value: string | number) => {
     onTextsChange({ ...texts, [field]: value });
   };
 
@@ -147,6 +148,7 @@ const CalculatorSettings = ({
       button1Link: '',
       button2Link: 'https://www.money-financei.ru/theapplicationisoffline',
       headerImage: '',
+      headerImageOpacity: 30,
     });
     onColorSchemeChange('teal');
     onDesignStyleChange('rounded');
@@ -382,16 +384,34 @@ const CalculatorSettings = ({
               <div>
                 <Label className="text-sm font-medium text-gray-700 mb-2 block">Изображение в шапке</Label>
                 {texts.headerImage ? (
-                  <div className="relative">
-                    <img src={texts.headerImage} alt="Header" className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
-                    <Button
-                      onClick={handleRemoveImage}
-                      size="sm"
-                      variant="destructive"
-                      className="absolute top-2 right-2"
-                    >
-                      <Icon name="X" size={16} />
-                    </Button>
+                  <div className="space-y-3">
+                    <div className="relative">
+                      <img src={texts.headerImage} alt="Header" className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
+                      <Button
+                        onClick={handleRemoveImage}
+                        size="sm"
+                        variant="destructive"
+                        className="absolute top-2 right-2"
+                      >
+                        <Icon name="X" size={16} />
+                      </Button>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Прозрачность изображения: {texts.headerImageOpacity}%</Label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={texts.headerImageOpacity}
+                        onChange={(e) => handleTextChange('headerImageOpacity', e.target.value)}
+                        className="w-full mt-2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>0% (прозрачно)</span>
+                        <span>100% (непрозрачно)</span>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">

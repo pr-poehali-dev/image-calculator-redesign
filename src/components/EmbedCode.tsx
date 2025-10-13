@@ -16,6 +16,7 @@ interface CalculatorTexts {
   button1Link: string;
   button2Link: string;
   headerImage?: string;
+  headerImageOpacity?: number;
 }
 
 interface LoanParams {
@@ -105,7 +106,7 @@ ${texts.headerImage ? `
   background-image: url('${texts.headerImage}') !important;
   background-size: cover !important;
   background-position: center !important;
-  opacity: 0.3 !important;
+  opacity: ${(texts.headerImageOpacity || 30) / 100} !important;
   z-index: 0 !important;
 }` : ''}
 #loan-calculator .loan-calc-header * {
