@@ -382,8 +382,55 @@ const CalculatorSettings = ({
             </h3>
             <div className="space-y-4">
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">Изображение в шапке</Label>
-                {texts.headerImage ? (
+                <Label className="text-sm font-medium text-gray-700 mb-3 block">Изображение в шапке</Label>
+                
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4">
+                  {[
+                    { url: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800', name: 'Деньги' },
+                    { url: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800', name: 'Финансы' },
+                    { url: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=800', name: 'Монеты' },
+                    { url: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=800', name: 'Карта' },
+                    { url: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800', name: 'Банк' },
+                    { url: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800', name: 'График' },
+                    { url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800', name: 'Успех' },
+                    { url: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800', name: 'Рост' },
+                  ].map((image, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => onTextsChange({ ...texts, headerImage: image.url })}
+                      className={`relative h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                        texts.headerImage === image.url
+                          ? 'border-teal-500 scale-105 shadow-lg'
+                          : 'border-gray-200 hover:border-gray-400'
+                      }`}
+                      title={image.name}
+                    >
+                      <img src={image.url} alt={image.name} className="w-full h-full object-cover" />
+                      {texts.headerImage === image.url && (
+                        <div className="absolute inset-0 bg-teal-500/20 flex items-center justify-center">
+                          <Icon name="Check" size={20} className="text-white drop-shadow-lg" />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors mb-4">
+                  <input
+                    type="file"
+                    id="headerImage"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <label htmlFor="headerImage" className="cursor-pointer">
+                    <Icon name="Upload" size={24} className="mx-auto text-gray-400 mb-1" />
+                    <p className="text-sm text-gray-600">Или загрузите своё изображение</p>
+                    <p className="text-xs text-gray-400 mt-1">JPG, PNG до 5MB</p>
+                  </label>
+                </div>
+
+                {texts.headerImage && (
                   <div className="space-y-3">
                     <div className="relative">
                       <img src={texts.headerImage} alt="Header" className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
@@ -412,21 +459,6 @@ const CalculatorSettings = ({
                         <span>100% (непрозрачно)</span>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                    <input
-                      type="file"
-                      id="headerImage"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                    <label htmlFor="headerImage" className="cursor-pointer">
-                      <Icon name="Upload" size={32} className="mx-auto text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-600">Нажмите для загрузки изображения</p>
-                      <p className="text-xs text-gray-400 mt-1">JPG, PNG до 5MB</p>
-                    </label>
                   </div>
                 )}
               </div>
