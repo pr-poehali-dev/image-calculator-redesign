@@ -1,5 +1,6 @@
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 
 interface CalculatorTexts {
   title: string;
@@ -42,6 +43,25 @@ interface LoanCalculatorProps {
 }
 
 const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, sliderTrackColor, loanParams }: LoanCalculatorProps) => {
+  const [timeLeft, setTimeLeft] = useState(600);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 0) return 600;
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const colorSchemes: Record<string, { gradient: string; text: string; border: string }> = {
     teal: { gradient: 'from-emerald-400 via-teal-400 to-cyan-400', text: 'text-teal-500', border: 'border-teal-400' },
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
@@ -100,9 +120,13 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
               {texts.title}
             </h1>
-            <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
+            <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium mb-3">
               {texts.subtitle}
             </p>
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 text-xs sm:text-sm">
+              <span className="text-white/90 font-medium">⏱️ Заявка доступна:</span>
+              <span className="font-mono font-bold text-white">{formatTime(timeLeft)}</span>
+            </div>
           </div>
         </div>
       </div>
