@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
-import EmbedCodeBlock from '@/components/embed/EmbedCodeBlock';
-import EmbedInstructions from '@/components/embed/EmbedInstructions';
-import { generateCssCode, generateHtmlCode, generateJsCode, generateFullCode } from '@/components/embed/CodeGenerators';
 
 interface CalculatorTexts {
   title: string;
@@ -44,25 +44,363 @@ const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSiz
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const cssCode = useMemo(() => 
-    generateCssCode(colorScheme, designStyle, calculatorWidth, sliderSize, sliderTrackColor, texts),
-    [colorScheme, designStyle, calculatorWidth, sliderSize, sliderTrackColor, texts]
-  );
+  const colorSchemes: Record<string, { cssGradient: string; cssText: string; cssBorder: string }> = {
+    teal: { cssGradient: '#34d399, #14b8a6, #22d3ee', cssText: '#14b8a6', cssBorder: '#14b8a6' },
+    purple: { cssGradient: '#a78bfa, #8b5cf6, #6366f1', cssText: '#8b5cf6', cssBorder: '#8b5cf6' },
+    orange: { cssGradient: '#fb923c, #fbbf24, #facc15', cssText: '#f97316', cssBorder: '#f97316' },
+    pink: { cssGradient: '#f472b6, #fb7185, #ef4444', cssText: '#fb7185', cssBorder: '#fb7185' },
+    blue: { cssGradient: '#60a5fa, #38bdf8, #22d3ee', cssText: '#3b82f6', cssBorder: '#3b82f6' },
+    green: { cssGradient: '#4ade80, #34d399, #14b8a6', cssText: '#22c55e', cssBorder: '#22c55e' },
+  };
 
-  const htmlCode = useMemo(() => 
-    generateHtmlCode(texts, loanParams),
-    [texts, loanParams]
-  );
+  const designStyles: Record<string, { cssGradient: string; borderRadius: string; shadow: string }> = {
+    rounded: { cssGradient: '#34d399, #14b8a6', borderRadius: '24px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    sharp: { cssGradient: '#94a3b8, #6b7280', borderRadius: '8px', shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' },
+    minimal: { cssGradient: '#d1d5db, #9ca3af', borderRadius: '12px', shadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' },
+    'gradient-modern': { cssGradient: '#a855f7, #ec4899, #ef4444', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    neon: { cssGradient: '#22d3ee, #3b82f6, #9333ea', borderRadius: '24px', shadow: '0 0 30px rgba(0,200,255,0.5)' },
+    sunset: { cssGradient: '#fb923c, #ec4899, #9333ea', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    ocean: { cssGradient: '#60a5fa, #22d3ee, #14b8a6', borderRadius: '24px', shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' },
+    forest: { cssGradient: '#22c55e, #10b981, #0d9488', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    fire: { cssGradient: '#ef4444, #f97316, #facc15', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    pastel: { cssGradient: '#fbcfe8, #ddd6fe, #c7d2fe', borderRadius: '24px', shadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' },
+    dark: { cssGradient: '#1f2937, #111827, #000000', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.3)' },
+    gold: { cssGradient: '#fbbf24, #f59e0b, #fb923c', borderRadius: '16px', shadow: '0 0 20px rgba(255,200,0,0.4)' },
+    silver: { cssGradient: '#d1d5db, #94a3b8, #71717a', borderRadius: '16px', shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' },
+    candy: { cssGradient: '#f472b6, #fb7185, #ef4444', borderRadius: '24px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    mint: { cssGradient: '#86efac, #6ee7b7, #2dd4bf', borderRadius: '24px', shadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' },
+    lavender: { cssGradient: '#d8b4fe, #c4b5fd, #a5b4fc', borderRadius: '24px', shadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' },
+    retro: { cssGradient: '#fde047, #fb923c, #ef4444', borderRadius: '8px', shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' },
+    cyber: { cssGradient: '#d946ef, #22d3ee, #facc15', borderRadius: '12px', shadow: '0 0 40px rgba(255,0,255,0.5)' },
+    premium: { cssGradient: '#4f46e5, #7c3aed, #db2777', borderRadius: '16px', shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' },
+    classic: { cssGradient: '#3b82f6, #1d4ed8', borderRadius: '12px', shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' },
+  };
 
-  const jsCode = useMemo(() => 
-    generateJsCode(loanParams),
-    [loanParams]
-  );
+  const currentColor = colorSchemes[colorScheme] || colorSchemes.teal;
+  const currentStyle = designStyles[designStyle] || designStyles.rounded;
 
-  const fullCode = useMemo(() => 
-    generateFullCode(cssCode, htmlCode, jsCode),
-    [cssCode, htmlCode, jsCode]
-  );
+  const cssCode = useMemo(() => `#loan-calculator {
+  max-width: ${calculatorWidth}px !important;
+  margin: 0 auto !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  box-sizing: border-box !important;
+}
+#loan-calculator * {
+  box-sizing: border-box !important;
+}
+#loan-calculator .loan-calc-header {
+  background: linear-gradient(to bottom right, ${currentStyle.cssGradient}) !important;
+  border-radius: ${currentStyle.borderRadius} ${currentStyle.borderRadius} 0 0 !important;
+  padding: 24px 20px !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+${texts.headerImage ? `
+#loan-calculator .loan-calc-header::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-image: url('${texts.headerImage}') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  opacity: ${(texts.headerImageOpacity || 30) / 100} !important;
+  z-index: 0 !important;
+}` : ''}
+#loan-calculator .loan-calc-header * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+#loan-calculator .loan-calc-header h1 {
+  color: white !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+  margin: 0 0 12px 0 !important;
+  line-height: 1.2 !important;
+}
+#loan-calculator .loan-calc-header p {
+  color: white !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+#loan-calculator .loan-calc-card {
+  background: white !important;
+  border-radius: 0 0 ${currentStyle.borderRadius} ${currentStyle.borderRadius} !important;
+  padding: 20px !important;
+  box-shadow: ${currentStyle.shadow} !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+}
+#loan-calculator .loan-calc-group {
+  margin-bottom: 24px !important;
+}
+#loan-calculator .loan-calc-label {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+}
+#loan-calculator .loan-calc-label span {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+#loan-calculator .loan-calc-value {
+  color: ${currentColor.cssText} !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+}
+#loan-calculator .loan-calc-slider {
+  width: 100% !important;
+  height: ${8 * sliderSize / 100}px !important;
+  background: ${sliderTrackColor} !important;
+  border-radius: 10px !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  cursor: pointer !important;
+  margin: 8px 0 !important;
+  transform: scaleY(${sliderSize / 100}) !important;
+  transform-origin: left center !important;
+}
+#loan-calculator .loan-calc-slider::-webkit-slider-track {
+  height: 8px !important;
+  background: ${sliderTrackColor} !important;
+  border-radius: 10px !important;
+}
+#loan-calculator .loan-calc-slider::-moz-range-track {
+  height: 8px !important;
+  background: ${sliderTrackColor} !important;
+  border-radius: 10px !important;
+  border: none !important;
+}
+#loan-calculator .loan-calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: ${36 * sliderSize / 100}px !important;
+  height: ${36 * sliderSize / 100}px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
+  cursor: pointer !important;
+  border: ${3 * sliderSize / 100}px solid white !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+#loan-calculator .loan-calc-slider::-moz-range-thumb {
+  width: ${36 * sliderSize / 100}px !important;
+  height: ${36 * sliderSize / 100}px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(to bottom right, ${currentColor.cssGradient}) !important;
+  cursor: pointer !important;
+  border: ${3 * sliderSize / 100}px solid white !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+#loan-calculator .loan-calc-hint {
+  color: #9ca3af !important;
+  font-size: 14px !important;
+  margin-top: 8px !important;
+}
+#loan-calculator .loan-calc-btn {
+  width: 100% !important;
+  background: white !important;
+  color: ${currentColor.cssText} !important;
+  border: 3px solid ${currentColor.cssBorder} !important;
+  border-radius: ${currentStyle.borderRadius} !important;
+  padding: 14px !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  transition: background 0.2s !important;
+  text-decoration: none !important;
+  display: block !important;
+  text-align: center !important;
+}
+#loan-calculator .loan-calc-btn:hover {
+  background: #f0fdfa !important;
+}
+#loan-calculator .loan-calc-btn-primary {
+  background: linear-gradient(to right, ${currentColor.cssGradient}) !important;
+  color: white !important;
+  border: none !important;
+  margin-bottom: 0 !important;
+}
+#loan-calculator .loan-calc-btn-primary:hover {
+  opacity: 0.9 !important;
+}
+@media (min-width: 640px) {
+  #loan-calculator .loan-calc-header {
+    border-radius: 20px 20px 0 0 !important;
+    padding: 40px 32px !important;
+  }
+  #loan-calculator .loan-calc-header h1 {
+    font-size: 40px !important;
+    margin-bottom: 20px !important;
+  }
+  #loan-calculator .loan-calc-header p {
+    font-size: 24px !important;
+  }
+  #loan-calculator .loan-calc-card {
+    border-radius: 0 0 20px 20px !important;
+    padding: 32px !important;
+  }
+  #loan-calculator .loan-calc-group {
+    margin-bottom: 32px !important;
+  }
+  #loan-calculator .loan-calc-label {
+    margin-bottom: 16px !important;
+  }
+  #loan-calculator .loan-calc-label span {
+    font-size: 24px !important;
+  }
+  #loan-calculator .loan-calc-value {
+    font-size: 32px !important;
+  }
+  #loan-calculator .loan-calc-slider::-webkit-slider-thumb {
+    width: 44px !important;
+    height: 44px !important;
+    border: 4px solid white !important;
+  }
+  #loan-calculator .loan-calc-slider::-moz-range-thumb {
+    width: 44px !important;
+    height: 44px !important;
+    border: 4px solid white !important;
+  }
+  #loan-calculator .loan-calc-hint {
+    font-size: 16px !important;
+  }
+  #loan-calculator .loan-calc-btn {
+    padding: 16px !important;
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+  }
+}
+@media (min-width: 768px) {
+  #loan-calculator .loan-calc-header {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 48px 40px !important;
+  }
+  #loan-calculator .loan-calc-header h1 {
+    font-size: 48px !important;
+  }
+  #loan-calculator .loan-calc-header p {
+    font-size: 30px !important;
+  }
+  #loan-calculator .loan-calc-card {
+    border-radius: 0 0 24px 24px !important;
+    padding: 40px !important;
+  }
+  #loan-calculator .loan-calc-label span {
+    font-size: 28px !important;
+  }
+  #loan-calculator .loan-calc-value {
+    font-size: 36px !important;
+  }
+  #loan-calculator .loan-calc-slider::-webkit-slider-thumb {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  #loan-calculator .loan-calc-slider::-moz-range-thumb {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  #loan-calculator .loan-calc-btn {
+    padding: 20px !important;
+    font-size: 22px !important;
+  }
+}`, [colorScheme, designStyle, calculatorWidth, sliderSize, texts.headerImage]);
+
+  const defaultAmount = Math.min(16000, loanParams.maxAmount);
+  const defaultDays = Math.min(10, loanParams.maxDays);
+
+  const htmlCode = useMemo(() => `<div id="loan-calculator">
+  <div class="loan-calc-header">
+    <h1>${texts.title}</h1>
+    <p>${texts.subtitle}</p>
+  </div>
+  <div class="loan-calc-card">
+    <div class="loan-calc-group">
+      <div class="loan-calc-label">
+        <span>${texts.amountLabel}</span>
+        <span class="loan-calc-value" id="amount-value">${defaultAmount.toLocaleString('ru-RU')} ₽</span>
+      </div>
+      <input type="range" min="${loanParams.minAmount}" max="${loanParams.maxAmount}" step="${loanParams.stepAmount}" value="${defaultAmount}" class="loan-calc-slider" id="amount-slider">
+      <div class="loan-calc-hint">${texts.amountHint}</div>
+    </div>
+    
+    <div class="loan-calc-group">
+      <div class="loan-calc-label">
+        <span>${texts.daysLabel}</span>
+        <span class="loan-calc-value" id="days-value">${defaultDays} дней</span>
+      </div>
+      <input type="range" min="${loanParams.minDays}" max="${loanParams.maxDays}" step="${loanParams.stepDays}" value="${defaultDays}" class="loan-calc-slider" id="days-slider">
+      <div class="loan-calc-hint">${texts.daysHint}</div>
+    </div>
+    
+    ${texts.button1Link 
+      ? `<a href="${texts.button1Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn">${texts.button1Text}</a>` 
+      : `<button class="loan-calc-btn">${texts.button1Text}</button>`}
+    ${texts.button2Link 
+      ? `<a href="${texts.button2Link}" target="_blank" rel="noopener noreferrer" class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">${defaultAmount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> ₽</a>` 
+      : `<button class="loan-calc-btn loan-calc-btn-primary">${texts.button2Text} <span id="total-amount">${defaultAmount.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> ₽</button>`}
+  </div>
+</div>`, [texts, calculatorWidth, sliderSize, colorScheme, designStyle, loanParams]);
+
+  const jsCode = `(function() {
+  const amountSlider = document.getElementById('amount-slider');
+  const daysSlider = document.getElementById('days-slider');
+  const amountValue = document.getElementById('amount-value');
+  const daysValue = document.getElementById('days-value');
+  const totalAmount = document.getElementById('total-amount');
+  
+  const calculateInterest = ${loanParams.calculateInterest};
+  const interestRate = ${loanParams.interestRate};
+  
+  function formatNumber(num) {
+    return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ' ');
+  }
+  
+  function formatDecimal(num) {
+    return num.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g, ' ').replace('.', ',');
+  }
+  
+  function calculateTotal(amount, days) {
+    if (calculateInterest) {
+      return amount + (amount * interestRate / 100 * days);
+    }
+    return amount;
+  }
+  
+  function updateCalculator() {
+    const amount = parseInt(amountSlider.value);
+    const days = parseInt(daysSlider.value);
+    
+    amountValue.textContent = formatNumber(amount) + ' ₽';
+    daysValue.textContent = days + ' дней';
+    
+    const total = calculateTotal(amount, days);
+    totalAmount.textContent = formatDecimal(total);
+  }
+  
+  amountSlider.addEventListener('input', updateCalculator);
+  daysSlider.addEventListener('input', updateCalculator);
+  
+  updateCalculator();
+})();`;
+
+  const fullCode = useMemo(() => `<!-- КАЛЬКУЛЯТОР ЗАЙМОВ -->
+<style>
+${cssCode}
+</style>
+
+${htmlCode}
+
+<script>
+${jsCode}
+</script>`, [cssCode, htmlCode, jsCode]);
 
   const copyToClipboard = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
@@ -85,62 +423,158 @@ const EmbedCode = ({ texts, colorScheme, designStyle, calculatorWidth, sliderSiz
         </p>
       </div>
 
-      <EmbedCodeBlock
-        title="Полный код (всё в одном)"
-        subtitle="⚡ CSS + HTML + JS"
-        code={fullCode}
-        iconName="Package"
-        iconColor="text-teal-500"
-        buttonColor="bg-teal-500"
-        textColor="text-teal-400"
-        borderColor="border-teal-300"
-        onCopy={() => copyToClipboard(fullCode, 'Полный код')}
-        showCopyLabel={!copied}
-        size="large"
-      />
+      <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-300">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="bg-teal-500 rounded-lg p-2">
+              <Icon name="Package" size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900">Полный код (всё в одном)</h3>
+              <p className="text-xs text-teal-700 font-semibold">⚡ CSS + HTML + JS</p>
+            </div>
+          </div>
+          <Button
+            onClick={() => copyToClipboard(fullCode, 'Полный код')}
+            className="gap-2 bg-teal-500 hover:bg-teal-600"
+            size="sm"
+          >
+            {copied ? (
+              <>
+                <Icon name="Check" size={16} />
+                <span className="hidden sm:inline">Скопировано</span>
+              </>
+            ) : (
+              <>
+                <Icon name="Copy" size={16} />
+                <span className="hidden sm:inline">Копировать всё</span>
+              </>
+            )}
+          </Button>
+        </div>
+        <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto max-h-96">
+          <pre className="text-xs md:text-sm text-teal-400 font-mono whitespace-pre">
+            {fullCode}
+          </pre>
+        </div>
+      </Card>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <EmbedCodeBlock
-          title="CSS стили"
-          code={cssCode}
-          iconName="Paintbrush"
-          iconColor="text-purple-500"
-          buttonColor="bg-purple-500"
-          textColor="text-purple-400"
-          borderColor="border-purple-200"
-          onCopy={() => copyToClipboard(cssCode, 'CSS')}
-          showCopyLabel={false}
-          size="small"
-        />
+        <Card className="rounded-xl shadow-md p-4 bg-white border-2 border-purple-200">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Icon name="Paintbrush" size={20} className="text-purple-500" />
+              <h3 className="font-bold text-gray-900">CSS стили</h3>
+            </div>
+            <Button
+              onClick={() => copyToClipboard(cssCode, 'CSS')}
+              className="gap-1 bg-purple-500 hover:bg-purple-600 h-8 px-2"
+              size="sm"
+            >
+              <Icon name="Copy" size={14} />
+            </Button>
+          </div>
+          <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto max-h-48">
+            <pre className="text-xs text-purple-400 font-mono whitespace-pre">
+              {cssCode}
+            </pre>
+          </div>
+        </Card>
 
-        <EmbedCodeBlock
-          title="HTML разметка"
-          code={htmlCode}
-          iconName="Code"
-          iconColor="text-blue-500"
-          buttonColor="bg-blue-500"
-          textColor="text-blue-400"
-          borderColor="border-blue-200"
-          onCopy={() => copyToClipboard(htmlCode, 'HTML')}
-          showCopyLabel={false}
-          size="small"
-        />
+        <Card className="rounded-xl shadow-md p-4 bg-white border-2 border-blue-200">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Icon name="Code" size={20} className="text-blue-500" />
+              <h3 className="font-bold text-gray-900">HTML разметка</h3>
+            </div>
+            <Button
+              onClick={() => copyToClipboard(htmlCode, 'HTML')}
+              className="gap-1 bg-blue-500 hover:bg-blue-600 h-8 px-2"
+              size="sm"
+            >
+              <Icon name="Copy" size={14} />
+            </Button>
+          </div>
+          <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto max-h-48">
+            <pre className="text-xs text-blue-400 font-mono whitespace-pre">
+              {htmlCode}
+            </pre>
+          </div>
+        </Card>
 
-        <EmbedCodeBlock
-          title="JavaScript"
-          code={jsCode}
-          iconName="Zap"
-          iconColor="text-yellow-500"
-          buttonColor="bg-yellow-500"
-          textColor="text-yellow-400"
-          borderColor="border-yellow-200"
-          onCopy={() => copyToClipboard(jsCode, 'JavaScript')}
-          showCopyLabel={false}
-          size="small"
-        />
+        <Card className="rounded-xl shadow-md p-4 bg-white border-2 border-yellow-200">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Icon name="Zap" size={20} className="text-yellow-500" />
+              <h3 className="font-bold text-gray-900">JavaScript</h3>
+            </div>
+            <Button
+              onClick={() => copyToClipboard(jsCode, 'JavaScript')}
+              className="gap-1 bg-yellow-500 hover:bg-yellow-600 h-8 px-2"
+              size="sm"
+            >
+              <Icon name="Copy" size={14} />
+            </Button>
+          </div>
+          <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto max-h-48">
+            <pre className="text-xs text-yellow-400 font-mono whitespace-pre">
+              {jsCode}
+            </pre>
+          </div>
+        </Card>
       </div>
 
-      <EmbedInstructions />
+      <Card className="rounded-2xl shadow-lg p-5 md:p-6 bg-gradient-to-r from-teal-50 to-cyan-50 border-2 border-teal-200">
+        <div className="flex items-start gap-3">
+          <div className="bg-teal-500 rounded-full p-2">
+            <Icon name="Lightbulb" size={20} className="text-white" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-gray-900 mb-3">Инструкция по установке:</h4>
+            <div className="space-y-2 text-sm text-gray-700">
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="Package" size={16} className="text-teal-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">Вариант 1: Полный код</p>
+                  <p className="text-xs text-gray-600">Скопируйте "Полный код" и вставьте на сайт - готово!</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="Layers" size={16} className="text-teal-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">Вариант 2: Отдельно (для Tilda)</p>
+                  <p className="text-xs text-gray-600">CSS и JS вставьте в блок T123 "HTML-код", HTML в блок T120 "HTML-код для вставки"</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
+                <Icon name="CheckCircle" size={16} className="text-teal-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">Готово!</p>
+                  <p className="text-xs text-gray-600">Калькулятор сразу заработает на вашем сайте</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      <div className="grid sm:grid-cols-3 gap-4 mt-8">
+        <Card className="p-4 text-center bg-white rounded-xl shadow-md">
+          <Icon name="Smartphone" size={32} className="mx-auto mb-2 text-teal-500" />
+          <h4 className="font-bold text-gray-900 mb-1">Адаптивный</h4>
+          <p className="text-sm text-gray-600">Отлично работает на всех устройствах</p>
+        </Card>
+        <Card className="p-4 text-center bg-white rounded-xl shadow-md">
+          <Icon name="Zap" size={32} className="mx-auto mb-2 text-yellow-500" />
+          <h4 className="font-bold text-gray-900 mb-1">Быстрый</h4>
+          <p className="text-sm text-gray-600">Загрузка менее 1 секунды</p>
+        </Card>
+        <Card className="p-4 text-center bg-white rounded-xl shadow-md">
+          <Icon name="Wrench" size={32} className="mx-auto mb-2 text-purple-500" />
+          <h4 className="font-bold text-gray-900 mb-1">Настраиваемый</h4>
+          <p className="text-sm text-gray-600">Легко изменить параметры в коде</p>
+        </Card>
+      </div>
     </div>
   );
 };
