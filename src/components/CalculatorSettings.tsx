@@ -413,14 +413,14 @@ const CalculatorSettings = ({
                 
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4">
                   {[
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/29/12/13/dollar-1869143_960_720.jpg', name: 'Деньги' },
-                    { url: 'https://cdn.pixabay.com/photo/2017/08/06/12/06/businesswoman-2589164_960_720.jpg', name: 'Финансы' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/08/05/29/bitcoins-1807380_960_720.jpg', name: 'Монеты' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/29/12/15/credit-card-1869140_960_720.jpg', name: 'Карта' },
-                    { url: 'https://cdn.pixabay.com/photo/2017/08/06/09/00/architecture-2588433_960_720.jpg', name: 'Банк' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_960_720.jpg', name: 'График' },
-                    { url: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/woman-865111_960_720.jpg', name: 'Успех' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/27/21/42/arrow-1863380_960_720.jpg', name: 'Рост' },
+                    { url: 'https://picsum.photos/seed/money1/800/400', name: '💵 Деньги', icon: '💵' },
+                    { url: 'https://picsum.photos/seed/finance2/800/400', name: '📊 Финансы', icon: '📊' },
+                    { url: 'https://picsum.photos/seed/coins3/800/400', name: '🪙 Монеты', icon: '🪙' },
+                    { url: 'https://picsum.photos/seed/card4/800/400', name: '💳 Карта', icon: '💳' },
+                    { url: 'https://picsum.photos/seed/bank5/800/400', name: '🏦 Банк', icon: '🏦' },
+                    { url: 'https://picsum.photos/seed/chart6/800/400', name: '📈 График', icon: '📈' },
+                    { url: 'https://picsum.photos/seed/success7/800/400', name: '✨ Успех', icon: '✨' },
+                    { url: 'https://picsum.photos/seed/growth8/800/400', name: '🚀 Рост', icon: '🚀' },
                   ].map((image, idx) => (
                     <button
                       key={idx}
@@ -432,7 +432,24 @@ const CalculatorSettings = ({
                       }`}
                       title={image.name}
                     >
-                      <img src={image.url} alt={image.name} className="w-full h-full object-cover" />
+                      <img 
+                        src={image.url} 
+                        alt={image.name} 
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                            const emoji = document.createElement('div');
+                            emoji.className = 'absolute inset-0 flex items-center justify-center text-3xl';
+                            emoji.textContent = image.icon;
+                            parent.appendChild(emoji);
+                          }
+                        }}
+                      />
                       {texts.headerImage === image.url && (
                         <div className="absolute inset-0 bg-teal-500/20 flex items-center justify-center">
                           <Icon name="Check" size={20} className="text-white drop-shadow-lg" />
