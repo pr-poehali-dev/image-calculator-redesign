@@ -8,177 +8,175 @@ const EmbedCode = () => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const cssCode = `<style>
-  #loan-calculator * { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-  }
-  
-  #loan-calculator { 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    width: 100%; 
-    max-width: 800px; 
-    margin: 0 auto; 
-    padding: 20px; 
-  }
-  
+  const cssCode = `#loan-calculator * { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+#loan-calculator { 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+  width: 100%; 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 20px; 
+}
+
+.loan-calc-header { 
+  background: linear-gradient(135deg, #34d399 0%, #14b8a6 50%, #22d3ee 100%); 
+  border-radius: 32px 32px 0 0; 
+  padding: 48px 32px; 
+  text-align: center; 
+}
+
+.loan-calc-header h1 { 
+  color: white; 
+  font-size: 48px; 
+  font-weight: 800; 
+  margin-bottom: 16px; 
+}
+
+.loan-calc-header p { 
+  color: white; 
+  font-size: 28px; 
+  font-weight: 500; 
+}
+
+.loan-calc-card { 
+  background: white; 
+  border-radius: 0 0 32px 32px; 
+  padding: 48px 40px; 
+  box-shadow: 0 25px 70px rgba(0,0,0,0.2); 
+}
+
+.loan-calc-group { 
+  margin-bottom: 48px; 
+}
+
+.loan-calc-label { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 16px; 
+}
+
+.loan-calc-label span { 
+  color: #111827; 
+  font-size: 24px; 
+  font-weight: 600; 
+}
+
+.loan-calc-value { 
+  color: #14b8a6; 
+  font-size: 32px; 
+  font-weight: 800; 
+}
+
+.loan-calc-slider { 
+  width: 100%; 
+  height: 8px; 
+  border-radius: 10px; 
+  background: #d1d5db; 
+  outline: none; 
+  -webkit-appearance: none; 
+  margin: 8px 0; 
+}
+
+.loan-calc-slider::-webkit-slider-track { 
+  height: 8px; 
+  background: #d1d5db; 
+  border-radius: 10px; 
+}
+
+.loan-calc-slider::-webkit-slider-thumb { 
+  -webkit-appearance: none; 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background: linear-gradient(135deg, #14b8a6, #22d3ee); 
+  cursor: pointer; 
+  border: 4px solid white; 
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
+}
+
+.loan-calc-slider::-moz-range-thumb { 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background: linear-gradient(135deg, #14b8a6, #22d3ee); 
+  cursor: pointer; 
+  border: 4px solid white; 
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
+}
+
+.loan-calc-hint { 
+  color: #9ca3af; 
+  font-size: 16px; 
+  margin-top: 12px; 
+}
+
+.loan-calc-btn { 
+  width: 100%; 
+  background: white; 
+  color: #14b8a6; 
+  border: 4px solid #14b8a6; 
+  border-radius: 50px; 
+  padding: 20px; 
+  font-size: 24px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  margin-bottom: 20px; 
+  transition: all 0.2s; 
+}
+
+.loan-calc-btn:hover { 
+  background: #f0fdfa; 
+  transform: translateY(-2px); 
+}
+
+.loan-calc-btn-primary { 
+  background: linear-gradient(135deg, #34d399 0%, #14b8a6 100%); 
+  color: white; 
+  border: none; 
+  box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4); 
+  margin-bottom: 0; 
+}
+
+.loan-calc-btn-primary:hover { 
+  background: linear-gradient(135deg, #10b981 0%, #0d9488 100%); 
+}
+
+@media (max-width: 640px) {
   .loan-calc-header { 
-    background: linear-gradient(135deg, #34d399 0%, #14b8a6 50%, #22d3ee 100%); 
-    border-radius: 32px 32px 0 0; 
-    padding: 48px 32px; 
-    text-align: center; 
+    padding: 32px 24px; 
   }
-  
   .loan-calc-header h1 { 
-    color: white; 
-    font-size: 48px; 
-    font-weight: 800; 
-    margin-bottom: 16px; 
-  }
-  
-  .loan-calc-header p { 
-    color: white; 
     font-size: 28px; 
-    font-weight: 500; 
   }
-  
+  .loan-calc-header p { 
+    font-size: 18px; 
+  }
   .loan-calc-card { 
-    background: white; 
-    border-radius: 0 0 32px 32px; 
-    padding: 48px 40px; 
-    box-shadow: 0 25px 70px rgba(0,0,0,0.2); 
+    padding: 24px 20px; 
   }
-  
-  .loan-calc-group { 
-    margin-bottom: 48px; 
-  }
-  
-  .loan-calc-label { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 16px; 
-  }
-  
-  .loan-calc-label span { 
-    color: #111827; 
-    font-size: 24px; 
-    font-weight: 600; 
-  }
-  
   .loan-calc-value { 
-    color: #14b8a6; 
-    font-size: 32px; 
-    font-weight: 800; 
-  }
-  
-  .loan-calc-slider { 
-    width: 100%; 
-    height: 8px; 
-    border-radius: 10px; 
-    background: #d1d5db; 
-    outline: none; 
-    -webkit-appearance: none; 
-    margin: 8px 0; 
-  }
-  
-  .loan-calc-slider::-webkit-slider-track { 
-    height: 8px; 
-    background: #d1d5db; 
-    border-radius: 10px; 
-  }
-  
-  .loan-calc-slider::-webkit-slider-thumb { 
-    -webkit-appearance: none; 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    background: linear-gradient(135deg, #14b8a6, #22d3ee); 
-    cursor: pointer; 
-    border: 4px solid white; 
-    box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
-  }
-  
-  .loan-calc-slider::-moz-range-thumb { 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    background: linear-gradient(135deg, #14b8a6, #22d3ee); 
-    cursor: pointer; 
-    border: 4px solid white; 
-    box-shadow: 0 4px 16px rgba(20, 184, 166, 0.5); 
-  }
-  
-  .loan-calc-hint { 
-    color: #9ca3af; 
-    font-size: 16px; 
-    margin-top: 12px; 
-  }
-  
-  .loan-calc-btn { 
-    width: 100%; 
-    background: white; 
-    color: #14b8a6; 
-    border: 4px solid #14b8a6; 
-    border-radius: 50px; 
-    padding: 20px; 
     font-size: 24px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    margin-bottom: 20px; 
-    transition: all 0.2s; 
   }
-  
-  .loan-calc-btn:hover { 
-    background: #f0fdfa; 
-    transform: translateY(-2px); 
+  .loan-calc-label span { 
+    font-size: 16px; 
   }
-  
-  .loan-calc-btn-primary { 
-    background: linear-gradient(135deg, #34d399 0%, #14b8a6 100%); 
-    color: white; 
-    border: none; 
-    box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4); 
-    margin-bottom: 0; 
+  .loan-calc-slider::-webkit-slider-thumb { 
+    width: 32px; 
+    height: 32px; 
   }
-  
-  .loan-calc-btn-primary:hover { 
-    background: linear-gradient(135deg, #10b981 0%, #0d9488 100%); 
+  .loan-calc-slider::-moz-range-thumb { 
+    width: 32px; 
+    height: 32px; 
   }
-  
-  @media (max-width: 640px) {
-    .loan-calc-header { 
-      padding: 32px 24px; 
-    }
-    .loan-calc-header h1 { 
-      font-size: 28px; 
-    }
-    .loan-calc-header p { 
-      font-size: 18px; 
-    }
-    .loan-calc-card { 
-      padding: 24px 20px; 
-    }
-    .loan-calc-value { 
-      font-size: 24px; 
-    }
-    .loan-calc-label span { 
-      font-size: 16px; 
-    }
-    .loan-calc-slider::-webkit-slider-thumb { 
-      width: 32px; 
-      height: 32px; 
-    }
-    .loan-calc-slider::-moz-range-thumb { 
-      width: 32px; 
-      height: 32px; 
-    }
-    .loan-calc-btn { 
-      font-size: 18px; 
-    }
+  .loan-calc-btn { 
+    font-size: 18px; 
   }
-</style>`;
+}`;
 
   const htmlCode = `<div id="loan-calculator">
   <div class="loan-calc-header">
@@ -191,15 +189,7 @@ const EmbedCode = () => {
         <span>Сумма</span>
         <span class="loan-calc-value" id="amount-value">16 000 ₽</span>
       </div>
-      <input 
-        type="range" 
-        min="3000" 
-        max="20000" 
-        step="1000" 
-        value="16000" 
-        class="loan-calc-slider" 
-        id="amount-slider"
-      >
+      <input type="range" min="3000" max="20000" step="1000" value="16000" class="loan-calc-slider" id="amount-slider">
       <div class="loan-calc-hint">Максимальная сумма: 20 000,00 ₽</div>
     </div>
     
@@ -208,29 +198,16 @@ const EmbedCode = () => {
         <span>Срок</span>
         <span class="loan-calc-value" id="days-value">10 дней</span>
       </div>
-      <input 
-        type="range" 
-        min="7" 
-        max="15" 
-        step="1" 
-        value="10" 
-        class="loan-calc-slider" 
-        id="days-slider"
-      >
+      <input type="range" min="7" max="15" step="1" value="10" class="loan-calc-slider" id="days-slider">
       <div class="loan-calc-hint">Максимальный срок: 15 дней</div>
     </div>
     
-    <button class="loan-calc-btn" onclick="alert('Переход на госуслуги')">
-      госуслуги
-    </button>
-    <button class="loan-calc-btn loan-calc-btn-primary" onclick="alert('Оформление займа')">
-      Получить <span id="total-amount">16 000,00</span> ₽
-    </button>
+    <button class="loan-calc-btn" onclick="alert('Переход на госуслуги')">госуслуги</button>
+    <button class="loan-calc-btn loan-calc-btn-primary" onclick="alert('Оформление займа')">Получить <span id="total-amount">16 000,00</span> ₽</button>
   </div>
 </div>`;
 
-  const jsCode = `<script>
-(function() {
+  const jsCode = `(function() {
   const amountSlider = document.getElementById('amount-slider');
   const daysSlider = document.getElementById('days-slider');
   const amountValue = document.getElementById('amount-value');
@@ -258,15 +235,18 @@ const EmbedCode = () => {
   daysSlider.addEventListener('input', updateCalculator);
   
   updateCalculator();
-})();
-</script>`;
+})();`;
 
   const fullCode = `<!-- КАЛЬКУЛЯТОР ЗАЙМОВ -->
+<style>
 ${cssCode}
+</style>
 
 ${htmlCode}
 
-${jsCode}`;
+<script>
+${jsCode}
+</script>`;
 
 
 
@@ -410,8 +390,8 @@ ${jsCode}`;
               <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
                 <Icon name="Layers" size={16} className="text-teal-600 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-semibold">Вариант 2: Отдельно</p>
-                  <p className="text-xs text-gray-600">Вставьте CSS в &lt;head&gt;, HTML в &lt;body&gt;, JS перед &lt;/body&gt;</p>
+                  <p className="font-semibold">Вариант 2: Отдельно (для Tilda)</p>
+                  <p className="text-xs text-gray-600">CSS и JS вставьте в блок T123 "HTML-код", HTML в блок T120 "HTML-код для вставки"</p>
                 </div>
               </div>
               <div className="flex items-start gap-2 bg-white p-3 rounded-lg">
