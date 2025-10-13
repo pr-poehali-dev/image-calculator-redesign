@@ -95,13 +95,25 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
           </div>
         )}
-        <div className="relative z-10">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
-            {texts.title}
-          </h1>
-          <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
-            {texts.subtitle}
-          </p>
+        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-left flex-1">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
+              {texts.title}
+            </h1>
+            <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
+              {texts.subtitle}
+            </p>
+          </div>
+          {days === 7 && (
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl border-2 border-white/50 min-w-[140px] sm:min-w-[180px]">
+              <div className="text-4xl sm:text-6xl font-black bg-gradient-to-br from-green-500 to-emerald-600 bg-clip-text text-transparent leading-tight">
+                0%
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-red-600 mt-1">
+                НА 7 ДНЕЙ
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
