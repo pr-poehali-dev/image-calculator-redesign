@@ -95,21 +95,58 @@ const LoanCalculator = () => {
             <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">12:56</div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
-            <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl md:rounded-2xl p-4 md:p-5">
-              <div className="text-xs sm:text-sm text-gray-500 mb-1">Возвращаете</div>
-              <div className="text-lg sm:text-xl font-bold text-gray-400 line-through mb-1">
-                {calculations.totalReturn.toLocaleString('ru-RU')} ₽
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl md:rounded-2xl p-4 md:p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-green-500 rounded-full p-1.5">
+                <Icon name="Check" size={18} className="text-white" />
               </div>
-              <div className="text-2xl sm:text-3xl font-bold text-green-600">
-                {amount.toLocaleString('ru-RU')} ₽
-              </div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Условия возврата</h3>
             </div>
+            
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white rounded-lg p-3 md:p-4">
+                <div className="flex-1">
+                  <div className="text-xs sm:text-sm text-gray-500 mb-1">Сумма займа</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                    {amount.toLocaleString('ru-RU')} ₽
+                  </div>
+                </div>
+                <Icon name="ArrowRight" size={24} className="text-gray-400 hidden sm:block" />
+                <div className="flex-1 sm:text-right">
+                  <div className="text-xs sm:text-sm text-gray-500 mb-1">Вы возвращаете</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
+                    {amount.toLocaleString('ru-RU')} ₽
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-400 line-through mt-0.5">
+                    было {calculations.totalReturn.toLocaleString('ru-RU')} ₽
+                  </div>
+                </div>
+              </div>
 
-            <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl md:rounded-2xl p-4 md:p-5">
-              <div className="text-xs sm:text-sm text-gray-500 mb-1">Дата возврата</div>
-              <div className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">
-                {calculations.returnDate}
+              <div className="flex items-center justify-between bg-white rounded-lg p-3 md:p-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-blue-100 rounded-full p-2">
+                    <Icon name="Calendar" size={20} className="text-blue-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs sm:text-sm text-gray-500">Дата возврата</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+                      {calculations.returnDate}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg p-3 md:p-4 text-white">
+                <div className="flex items-start gap-2">
+                  <Icon name="Sparkles" size={20} className="mt-0.5 shrink-0" />
+                  <div>
+                    <div className="font-bold text-sm sm:text-base mb-1">Экономия при возврате в срок:</div>
+                    <div className="text-2xl sm:text-3xl font-bold">
+                      {calculations.interest.toLocaleString('ru-RU')} ₽
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -120,19 +157,7 @@ const LoanCalculator = () => {
             ПОЛУЧИТЬ БЕСПЛАТНО
           </Button>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 bg-green-50 border-2 border-green-200 rounded-xl md:rounded-2xl p-3 md:p-4">
-            <div className="bg-green-500 rounded-full p-1 shrink-0">
-              <Icon name="Check" size={14} className="text-white" />
-            </div>
-            <div className="flex-1 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2">
-              <span className="text-gray-700 text-xs sm:text-sm md:text-base">
-                При возврате до {calculations.returnDate}
-              </span>
-              <span className="text-xl sm:text-2xl font-bold text-gray-900">
-                {amount.toLocaleString('ru-RU')}
-              </span>
-            </div>
-          </div>
+
         </div>
       </Card>
 
