@@ -13,6 +13,7 @@ interface BlueCalculatorTexts {
   buttonText: string;
   buttonLink: string;
   headerImage?: string;
+  characterImage?: string;
 }
 
 interface BlueCalculatorSettingsProps {
@@ -28,6 +29,8 @@ interface BlueCalculatorSettingsProps {
   onStepAmountChange: (value: number) => void;
   interestRate: number;
   onInterestRateChange: (value: number) => void;
+  showCharacter: boolean;
+  onShowCharacterChange: (show: boolean) => void;
 }
 
 const BlueCalculatorSettings = ({
@@ -43,6 +46,8 @@ const BlueCalculatorSettings = ({
   onStepAmountChange,
   interestRate,
   onInterestRateChange,
+  showCharacter,
+  onShowCharacterChange,
 }: BlueCalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -66,6 +71,21 @@ const BlueCalculatorSettings = ({
     onTextsChange({ ...texts, headerImage: '' });
   };
 
+  const handleCharacterImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onTextsChange({ ...texts, characterImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveCharacterImage = () => {
+    onTextsChange({ ...texts, characterImage: '' });
+  };
+
   const handleSaveDesign = () => {
     const settings = {
       texts,
@@ -74,6 +94,7 @@ const BlueCalculatorSettings = ({
       maxAmount,
       stepAmount,
       interestRate,
+      showCharacter,
       savedAt: new Date().toISOString(),
     };
     
@@ -96,12 +117,14 @@ const BlueCalculatorSettings = ({
       buttonText: 'Получить бесплатно',
       buttonLink: '',
       headerImage: '',
+      characterImage: '',
     });
     onCalculatorWidthChange(672);
     onMinAmountChange(1000);
     onMaxAmountChange(100000);
     onStepAmountChange(1000);
     onInterestRateChange(20);
+    onShowCharacterChange(true);
     
     toast({
       title: "🔄 Настройки сброшены",
@@ -210,6 +233,62 @@ const BlueCalculatorSettings = ({
                 <div className="relative w-full h-32 rounded-lg overflow-hidden border-2 border-gray-200">
                   <img src={texts.headerImage} alt="Header preview" className="w-full h-full object-cover" />
                 </div>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Smile" size={20} />
+              Персонаж
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 mb-3">
+                <input
+                  type="checkbox"
+                  id="showCharacter"
+                  checked={showCharacter}
+                  onChange={(e) => onShowCharacterChange(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                />
+                <Label htmlFor="showCharacter" className="cursor-pointer">
+                  Показать персонажа в правом углу
+                </Label>
+              </div>
+              {showCharacter && (
+                <>
+                  <div className="flex gap-3">
+                    <label className="flex-1">
+                      <Button asChild className="w-full">
+                        <span>
+                          <Icon name="Upload" size={18} className="mr-2" />
+                          Загрузить иконку персонажа
+                        </span>
+                      </Button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleCharacterImageUpload}
+                        className="hidden"
+                      />
+                    </label>
+                    {texts.characterImage && (
+                      <Button variant="destructive" onClick={handleRemoveCharacterImage}>
+                        <Icon name="Trash2" size={18} className="mr-2" />
+                        Удалить
+                      </Button>
+                    )}
+                  </div>
+                  {texts.characterImage ? (
+                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200">
+                      <img src={texts.characterImage} alt="Character preview" className="w-full h-full object-contain" />
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-500">
+                      По умолчанию: кекс с вишенкой 🧁
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

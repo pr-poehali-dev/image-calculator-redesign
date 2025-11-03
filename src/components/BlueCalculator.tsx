@@ -10,6 +10,7 @@ interface BlueCalculatorTexts {
   buttonText: string;
   buttonLink: string;
   headerImage?: string;
+  characterImage?: string;
 }
 
 interface BlueCalculatorProps {
@@ -22,6 +23,8 @@ interface BlueCalculatorProps {
   stepAmount: number;
   interestRate: number;
   onTextsChange?: (texts: BlueCalculatorTexts) => void;
+  showCharacter: boolean;
+  onShowCharacterChange?: (show: boolean) => void;
 }
 
 const BlueCalculator = ({ 
@@ -33,7 +36,9 @@ const BlueCalculator = ({
   maxAmount, 
   stepAmount, 
   interestRate,
-  onTextsChange 
+  onTextsChange,
+  showCharacter,
+  onShowCharacterChange
 }: BlueCalculatorProps) => {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -55,6 +60,23 @@ const BlueCalculator = ({
   const handleRemoveImage = () => {
     if (onTextsChange) {
       onTextsChange({ ...texts, headerImage: '' });
+    }
+  };
+
+  const handleCharacterImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onTextsChange) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onTextsChange({ ...texts, characterImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveCharacterImage = () => {
+    if (onTextsChange) {
+      onTextsChange({ ...texts, characterImage: '' });
     }
   };
 
@@ -100,13 +122,38 @@ const BlueCalculator = ({
           <p className="text-white text-sm sm:text-base md:text-lg">{texts.subtitle}</p>
         </div>
 
-        {texts.headerImage && (
-          <div className="absolute bottom-0 right-0 w-24 h-24 sm:w-36 sm:h-36 md:w-48 md:h-48 z-10">
+        {showCharacter && (
+          <div className="absolute bottom-0 right-0 w-24 h-24 sm:w-36 sm:h-36 md:w-48 md:h-48 z-10 group/char">
             <img 
-              src="https://cdn.poehali.dev/files/23264a37-7b0d-4b2e-8b9e-4d4af3979e60.jpg" 
+              src={texts.characterImage || "https://cdn.poehali.dev/files/23264a37-7b0d-4b2e-8b9e-4d4af3979e60.jpg"}
               alt="Character" 
               className="w-full h-full object-contain"
             />
+            {onTextsChange && (
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover/char:opacity-100 transition-opacity">
+                <label className="cursor-pointer bg-white/90 hover:bg-white rounded-full p-2 shadow-lg">
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCharacterImageUpload}
+                    className="hidden"
+                  />
+                </label>
+                {texts.characterImage && (
+                  <button
+                    onClick={handleRemoveCharacterImage}
+                    className="bg-white/90 hover:bg-white rounded-full p-2 shadow-lg"
+                  >
+                    <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

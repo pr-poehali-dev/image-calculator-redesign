@@ -76,6 +76,7 @@ const Index = () => {
     buttonText: 'Получить бесплатно',
     buttonLink: '',
     headerImage: '',
+    characterImage: '',
   });
   const [blueAmount, setBlueAmount] = useState(90000);
   const [blueCalculatorWidth, setBlueCalculatorWidth] = useState(672);
@@ -83,6 +84,7 @@ const Index = () => {
   const [blueMaxAmount, setBlueMaxAmount] = useState(100000);
   const [blueStepAmount, setBlueStepAmount] = useState(1000);
   const [blueInterestRate, setBlueInterestRate] = useState(20);
+  const [showCharacter, setShowCharacter] = useState(true);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
@@ -111,6 +113,7 @@ const Index = () => {
         if (settings.maxAmount) setBlueMaxAmount(settings.maxAmount);
         if (settings.stepAmount) setBlueStepAmount(settings.stepAmount);
         if (settings.interestRate) setBlueInterestRate(settings.interestRate);
+        if (settings.showCharacter !== undefined) setShowCharacter(settings.showCharacter);
       } catch (e) {
         console.error('Ошибка загрузки настроек синего калькулятора:', e);
       }
@@ -210,6 +213,8 @@ const Index = () => {
                   onStepAmountChange={setBlueStepAmount}
                   interestRate={blueInterestRate}
                   onInterestRateChange={setBlueInterestRate}
+                  showCharacter={showCharacter}
+                  onShowCharacterChange={setShowCharacter}
                 />
                 <BlueCalculator
                   texts={blueTexts}
@@ -221,6 +226,8 @@ const Index = () => {
                   stepAmount={blueStepAmount}
                   interestRate={blueInterestRate}
                   onTextsChange={setBlueTexts}
+                  showCharacter={showCharacter}
+                  onShowCharacterChange={setShowCharacter}
                 />
               </>
             )}
