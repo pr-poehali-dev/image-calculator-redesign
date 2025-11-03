@@ -18,24 +18,41 @@ interface BlueCalculatorTexts {
 interface BlueEmbedCodeProps {
   texts: BlueCalculatorTexts;
   calculatorWidth: number;
+  mobileWidth: number;
   minAmount: number;
   maxAmount: number;
   stepAmount: number;
   interestRate: number;
   showCharacter: boolean;
+  headerGradient: string;
+  sliderColor: string;
 }
 
 const BlueEmbedCode = ({
   texts,
   calculatorWidth,
+  mobileWidth,
   minAmount,
   maxAmount,
   stepAmount,
   interestRate,
   showCharacter,
+  headerGradient,
+  sliderColor,
 }: BlueEmbedCodeProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
+  
+  const gradientMap: Record<string, string> = {
+    'from-cyan-400 to-blue-500': '#22d3ee, #3b82f6',
+    'from-purple-400 to-indigo-500': '#a78bfa, #6366f1',
+    'from-pink-400 to-rose-500': '#f472b6, #fb7185',
+    'from-green-400 to-emerald-500': '#4ade80, #10b981',
+    'from-orange-400 to-amber-500': '#fb923c, #f59e0b',
+    'from-teal-400 to-cyan-500': '#2dd4bf, #22d3ee',
+  };
+  
+  const headerCssGradient = gradientMap[headerGradient] || '#22d3ee, #3b82f6';
 
   const cssCode = useMemo(() => `#blue-loan-calculator {
   max-width: ${calculatorWidth}px !important;
@@ -47,7 +64,7 @@ const BlueEmbedCode = ({
   box-sizing: border-box !important;
 }
 #blue-loan-calculator .blue-header {
-  background: linear-gradient(to bottom right, #22d3ee, #3b82f6) !important;
+  background: linear-gradient(to bottom right, ${headerCssGradient}) !important;
   border-radius: 24px 24px 0 0 !important;
   padding: 32px 24px !important;
   position: relative !important;
@@ -178,7 +195,7 @@ ${showCharacter ? `
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
-  background: linear-gradient(to bottom right, #fb923c, #f97316) !important;
+  background: ${sliderColor} !important;
   cursor: pointer !important;
   border: 3px solid white !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
@@ -187,7 +204,7 @@ ${showCharacter ? `
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
-  background: linear-gradient(to bottom right, #fb923c, #f97316) !important;
+  background: ${sliderColor} !important;
   cursor: pointer !important;
   border: 3px solid white !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
@@ -241,6 +258,9 @@ ${showCharacter ? `
   transform: translateY(-2px) !important;
 }
 @media (max-width: 640px) {
+  #blue-loan-calculator {
+    width: ${mobileWidth}% !important;
+  }
   #blue-loan-calculator .blue-header {
     padding: 16px !important;
     min-height: 140px !important;
@@ -289,7 +309,7 @@ ${showCharacter ? `
     font-size: 16px !important;
     padding: 20px 16px !important;
   }
-}`, [calculatorWidth, texts.headerImage, showCharacter]);
+}`, [calculatorWidth, mobileWidth, texts.headerImage, showCharacter, headerCssGradient, sliderColor]);
 
   const htmlCode = useMemo(() => {
     const characterImageSrc = texts.characterImage || 'https://cdn.poehali.dev/files/23264a37-7b0d-4b2e-8b9e-4d4af3979e60.jpg';

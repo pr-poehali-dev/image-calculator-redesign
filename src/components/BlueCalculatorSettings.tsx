@@ -21,6 +21,8 @@ interface BlueCalculatorSettingsProps {
   onTextsChange: (texts: BlueCalculatorTexts) => void;
   calculatorWidth: number;
   onCalculatorWidthChange: (width: number) => void;
+  mobileWidth: number;
+  onMobileWidthChange: (width: number) => void;
   minAmount: number;
   onMinAmountChange: (value: number) => void;
   maxAmount: number;
@@ -31,6 +33,10 @@ interface BlueCalculatorSettingsProps {
   onInterestRateChange: (value: number) => void;
   showCharacter: boolean;
   onShowCharacterChange: (show: boolean) => void;
+  headerGradient: string;
+  onHeaderGradientChange: (gradient: string) => void;
+  sliderColor: string;
+  onSliderColorChange: (color: string) => void;
 }
 
 const BlueCalculatorSettings = ({
@@ -38,6 +44,8 @@ const BlueCalculatorSettings = ({
   onTextsChange,
   calculatorWidth,
   onCalculatorWidthChange,
+  mobileWidth,
+  onMobileWidthChange,
   minAmount,
   onMinAmountChange,
   maxAmount,
@@ -48,6 +56,10 @@ const BlueCalculatorSettings = ({
   onInterestRateChange,
   showCharacter,
   onShowCharacterChange,
+  headerGradient,
+  onHeaderGradientChange,
+  sliderColor,
+  onSliderColorChange,
 }: BlueCalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -90,11 +102,14 @@ const BlueCalculatorSettings = ({
     const settings = {
       texts,
       calculatorWidth,
+      mobileWidth,
       minAmount,
       maxAmount,
       stepAmount,
       interestRate,
       showCharacter,
+      headerGradient,
+      sliderColor,
       savedAt: new Date().toISOString(),
     };
     
@@ -120,11 +135,14 @@ const BlueCalculatorSettings = ({
       characterImage: '',
     });
     onCalculatorWidthChange(672);
+    onMobileWidthChange(100);
     onMinAmountChange(1000);
     onMaxAmountChange(100000);
     onStepAmountChange(1000);
     onInterestRateChange(20);
     onShowCharacterChange(true);
+    onHeaderGradientChange('from-cyan-400 to-blue-500');
+    onSliderColorChange('#fb923c');
     
     toast({
       title: "🔄 Настройки сброшены",
@@ -339,18 +357,93 @@ const BlueCalculatorSettings = ({
 
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Palette" size={20} />
+              Цвета и стиль
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Цвет шапки</Label>
+                <div className="grid grid-cols-2 gap-3 mt-2">
+                  {[
+                    { name: 'Голубой', value: 'from-cyan-400 to-blue-500', preview: 'bg-gradient-to-r from-cyan-400 to-blue-500' },
+                    { name: 'Фиолетовый', value: 'from-purple-400 to-indigo-500', preview: 'bg-gradient-to-r from-purple-400 to-indigo-500' },
+                    { name: 'Розовый', value: 'from-pink-400 to-rose-500', preview: 'bg-gradient-to-r from-pink-400 to-rose-500' },
+                    { name: 'Зелёный', value: 'from-green-400 to-emerald-500', preview: 'bg-gradient-to-r from-green-400 to-emerald-500' },
+                    { name: 'Оранжевый', value: 'from-orange-400 to-amber-500', preview: 'bg-gradient-to-r from-orange-400 to-amber-500' },
+                    { name: 'Бирюзовый', value: 'from-teal-400 to-cyan-500', preview: 'bg-gradient-to-r from-teal-400 to-cyan-500' },
+                  ].map((color) => (
+                    <button
+                      key={color.value}
+                      onClick={() => onHeaderGradientChange(color.value)}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        headerGradient === color.value
+                          ? 'border-blue-500 ring-2 ring-blue-200'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className={`h-8 rounded ${color.preview} mb-2`}></div>
+                      <span className="text-sm font-medium">{color.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <Label>Цвет ползунка</Label>
+                <div className="grid grid-cols-3 gap-3 mt-2">
+                  {[
+                    { name: 'Оранжевый', value: '#fb923c', bg: 'bg-orange-400' },
+                    { name: 'Синий', value: '#3b82f6', bg: 'bg-blue-500' },
+                    { name: 'Красный', value: '#ef4444', bg: 'bg-red-500' },
+                    { name: 'Зелёный', value: '#22c55e', bg: 'bg-green-500' },
+                    { name: 'Фиолетовый', value: '#a855f7', bg: 'bg-purple-500' },
+                    { name: 'Розовый', value: '#ec4899', bg: 'bg-pink-500' },
+                  ].map((color) => (
+                    <button
+                      key={color.value}
+                      onClick={() => onSliderColorChange(color.value)}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        sliderColor === color.value
+                          ? 'border-blue-500 ring-2 ring-blue-200'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className={`h-6 w-6 rounded-full ${color.bg} mx-auto mb-1`}></div>
+                      <span className="text-xs font-medium">{color.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Icon name="Maximize2" size={20} />
               Размеры
             </h3>
-            <div>
-              <Label>Ширина калькулятора (px)</Label>
-              <Input
-                type="number"
-                value={calculatorWidth}
-                onChange={(e) => onCalculatorWidthChange(Number(e.target.value))}
-                min={320}
-                max={1200}
-              />
+            <div className="space-y-4">
+              <div>
+                <Label>Ширина для ПК (px)</Label>
+                <Input
+                  type="number"
+                  value={calculatorWidth}
+                  onChange={(e) => onCalculatorWidthChange(Number(e.target.value))}
+                  min={320}
+                  max={1200}
+                />
+                <p className="text-xs text-gray-500 mt-1">Ширина калькулятора на десктопе</p>
+              </div>
+              <div>
+                <Label>Ширина для мобильных (%)</Label>
+                <Input
+                  type="number"
+                  value={mobileWidth}
+                  onChange={(e) => onMobileWidthChange(Number(e.target.value))}
+                  min={80}
+                  max={100}
+                />
+                <p className="text-xs text-gray-500 mt-1">Процент от ширины экрана на мобильных</p>
+              </div>
             </div>
           </div>
 

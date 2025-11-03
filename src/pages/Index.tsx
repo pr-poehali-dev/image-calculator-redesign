@@ -81,11 +81,14 @@ const Index = () => {
   });
   const [blueAmount, setBlueAmount] = useState(90000);
   const [blueCalculatorWidth, setBlueCalculatorWidth] = useState(672);
+  const [blueMobileWidth, setBlueMobileWidth] = useState(100);
   const [blueMinAmount, setBlueMinAmount] = useState(1000);
   const [blueMaxAmount, setBlueMaxAmount] = useState(100000);
   const [blueStepAmount, setBlueStepAmount] = useState(1000);
   const [blueInterestRate, setBlueInterestRate] = useState(20);
   const [showCharacter, setShowCharacter] = useState(true);
+  const [blueHeaderGradient, setBlueHeaderGradient] = useState('from-cyan-400 to-blue-500');
+  const [blueSliderColor, setBlueSliderColor] = useState('#fb923c');
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
@@ -110,11 +113,14 @@ const Index = () => {
         const settings = JSON.parse(savedBlueSettings);
         if (settings.texts) setBlueTexts(settings.texts);
         if (settings.calculatorWidth) setBlueCalculatorWidth(settings.calculatorWidth);
+        if (settings.mobileWidth) setBlueMobileWidth(settings.mobileWidth);
         if (settings.minAmount) setBlueMinAmount(settings.minAmount);
         if (settings.maxAmount) setBlueMaxAmount(settings.maxAmount);
         if (settings.stepAmount) setBlueStepAmount(settings.stepAmount);
         if (settings.interestRate) setBlueInterestRate(settings.interestRate);
         if (settings.showCharacter !== undefined) setShowCharacter(settings.showCharacter);
+        if (settings.headerGradient) setBlueHeaderGradient(settings.headerGradient);
+        if (settings.sliderColor) setBlueSliderColor(settings.sliderColor);
       } catch (e) {
         console.error('Ошибка загрузки настроек синего калькулятора:', e);
       }
@@ -206,6 +212,8 @@ const Index = () => {
                   onTextsChange={setBlueTexts}
                   calculatorWidth={blueCalculatorWidth}
                   onCalculatorWidthChange={setBlueCalculatorWidth}
+                  mobileWidth={blueMobileWidth}
+                  onMobileWidthChange={setBlueMobileWidth}
                   minAmount={blueMinAmount}
                   onMinAmountChange={setBlueMinAmount}
                   maxAmount={blueMaxAmount}
@@ -216,12 +224,17 @@ const Index = () => {
                   onInterestRateChange={setBlueInterestRate}
                   showCharacter={showCharacter}
                   onShowCharacterChange={setShowCharacter}
+                  headerGradient={blueHeaderGradient}
+                  onHeaderGradientChange={setBlueHeaderGradient}
+                  sliderColor={blueSliderColor}
+                  onSliderColorChange={setBlueSliderColor}
                 />
                 <BlueCalculator
                   texts={blueTexts}
                   amount={blueAmount}
                   onAmountChange={setBlueAmount}
                   calculatorWidth={blueCalculatorWidth}
+                  mobileWidth={blueMobileWidth}
                   minAmount={blueMinAmount}
                   maxAmount={blueMaxAmount}
                   stepAmount={blueStepAmount}
@@ -229,6 +242,8 @@ const Index = () => {
                   onTextsChange={setBlueTexts}
                   showCharacter={showCharacter}
                   onShowCharacterChange={setShowCharacter}
+                  headerGradient={blueHeaderGradient}
+                  sliderColor={blueSliderColor}
                 />
               </>
             )}
@@ -249,11 +264,14 @@ const Index = () => {
               <BlueEmbedCode
                 texts={blueTexts}
                 calculatorWidth={blueCalculatorWidth}
+                mobileWidth={blueMobileWidth}
                 minAmount={blueMinAmount}
                 maxAmount={blueMaxAmount}
                 stepAmount={blueStepAmount}
                 interestRate={blueInterestRate}
                 showCharacter={showCharacter}
+                headerGradient={blueHeaderGradient}
+                sliderColor={blueSliderColor}
               />
             )}
           </>

@@ -18,6 +18,7 @@ interface BlueCalculatorProps {
   amount: number;
   onAmountChange: (value: number) => void;
   calculatorWidth: number;
+  mobileWidth: number;
   minAmount: number;
   maxAmount: number;
   stepAmount: number;
@@ -25,20 +26,25 @@ interface BlueCalculatorProps {
   onTextsChange?: (texts: BlueCalculatorTexts) => void;
   showCharacter: boolean;
   onShowCharacterChange?: (show: boolean) => void;
+  headerGradient: string;
+  sliderColor: string;
 }
 
 const BlueCalculator = ({ 
   texts, 
   amount, 
   onAmountChange, 
-  calculatorWidth, 
+  calculatorWidth,
+  mobileWidth, 
   minAmount, 
   maxAmount, 
   stepAmount, 
   interestRate,
   onTextsChange,
   showCharacter,
-  onShowCharacterChange
+  onShowCharacterChange,
+  headerGradient,
+  sliderColor
 }: BlueCalculatorProps) => {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -83,8 +89,14 @@ const BlueCalculator = ({
   const returnAmount = calculateReturn();
 
   return (
-    <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
-      <div className="bg-gradient-to-br from-cyan-400 to-blue-500 rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-6 md:p-8 relative overflow-hidden group min-h-[140px] sm:min-h-[180px]">
+    <div 
+      className="w-full mx-auto touch-manipulation" 
+      style={{ 
+        maxWidth: `${calculatorWidth}px`,
+        width: window.innerWidth < 640 ? `${mobileWidth}%` : '100%'
+      }}
+    >
+      <div className={`bg-gradient-to-br ${headerGradient} rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-6 md:p-8 relative overflow-hidden group min-h-[140px] sm:min-h-[180px]`}>
         {texts.headerImage && (
           <div className="absolute inset-0">
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover opacity-30" />
@@ -174,19 +186,24 @@ const BlueCalculator = ({
             </div>
             
             <div className="relative">
-              <Slider
-                value={[amount]}
-                onValueChange={(value) => {
-                  onAmountChange(value[0]);
-                  setIsDragging(true);
-                }}
-                onValueCommit={() => setIsDragging(false)}
-                min={minAmount}
-                max={maxAmount}
-                step={stepAmount}
-                className="mb-3 sm:mb-4"
-                colorScheme="orange"
-              />
+              <div style={{ '--slider-color': sliderColor } as React.CSSProperties}>
+                <Slider
+                  value={[amount]}
+                  onValueChange={(value) => {
+                    onAmountChange(value[0]);
+                    setIsDragging(true);
+                  }}
+                  onValueCommit={() => setIsDragging(false)}
+                  min={minAmount}
+                  max={maxAmount}
+                  step={stepAmount}
+                  className="mb-3 sm:mb-4 blue-calc-slider"
+                  colorScheme="orange"
+                  style={{
+                    '--thumb-color': sliderColor,
+                  } as React.CSSProperties}
+                />
+              </div>
             </div>
           </div>
 
