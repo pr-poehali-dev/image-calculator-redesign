@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import LoanCalculator from '@/components/LoanCalculator';
 import CalculatorSettings from '@/components/CalculatorSettings';
+import BlueCalculator from '@/components/BlueCalculator';
+import BlueCalculatorSettings from '@/components/BlueCalculatorSettings';
 import EmbedCode from '@/components/EmbedCode';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
@@ -33,6 +35,7 @@ interface LoanParams {
 
 const Index = () => {
   const [showCode, setShowCode] = useState(false);
+  const [calculatorType, setCalculatorType] = useState<'classic' | 'blue'>('classic');
   const [amount, setAmount] = useState(16000);
   const [days, setDays] = useState(10);
   const [colorScheme, setColorScheme] = useState('teal');
@@ -65,6 +68,22 @@ const Index = () => {
     calculateInterest: true,
   });
 
+  const [blueTexts, setBlueTexts] = useState({
+    title: 'Первые три займа бесплатно!',
+    subtitle: 'При условии возврата займа в срок',
+    amountLabel: 'Сумма займа',
+    returnLabel: 'Вы вернете',
+    buttonText: 'Получить бесплатно',
+    buttonLink: '',
+    headerImage: '',
+  });
+  const [blueAmount, setBlueAmount] = useState(90000);
+  const [blueCalculatorWidth, setBlueCalculatorWidth] = useState(672);
+  const [blueMinAmount, setBlueMinAmount] = useState(1000);
+  const [blueMaxAmount, setBlueMaxAmount] = useState(100000);
+  const [blueStepAmount, setBlueStepAmount] = useState(1000);
+  const [blueInterestRate, setBlueInterestRate] = useState(20);
+
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
     if (savedSettings) {
@@ -81,12 +100,27 @@ const Index = () => {
         console.error('Ошибка загрузки настроек:', e);
       }
     }
+
+    const savedBlueSettings = localStorage.getItem('blueCalculatorSettings');
+    if (savedBlueSettings) {
+      try {
+        const settings = JSON.parse(savedBlueSettings);
+        if (settings.texts) setBlueTexts(settings.texts);
+        if (settings.calculatorWidth) setBlueCalculatorWidth(settings.calculatorWidth);
+        if (settings.minAmount) setBlueMinAmount(settings.minAmount);
+        if (settings.maxAmount) setBlueMaxAmount(settings.maxAmount);
+        if (settings.stepAmount) setBlueStepAmount(settings.stepAmount);
+        if (settings.interestRate) setBlueInterestRate(settings.interestRate);
+      } catch (e) {
+        console.error('Ошибка загрузки настроек синего калькулятора:', e);
+      }
+    }
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 py-4 sm:py-8 md:py-12 px-3 sm:px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-center mb-2 sm:mb-4">
+        <div className="flex flex-col gap-3 items-center mb-2 sm:mb-4">
           <div className="inline-flex bg-white rounded-full p-1 shadow-lg">
             <Button
               onClick={() => setShowCode(false)}
@@ -105,40 +139,91 @@ const Index = () => {
               Получить код
             </Button>
           </div>
+          
+          {!showCode && (
+            <div className="inline-flex bg-white rounded-full p-1 shadow-lg">
+              <Button
+                onClick={() => setCalculatorType('classic')}
+                variant={calculatorType === 'classic' ? "default" : "ghost"}
+                className="rounded-full px-6"
+              >
+                Классический
+              </Button>
+              <Button
+                onClick={() => setCalculatorType('blue')}
+                variant={calculatorType === 'blue' ? "default" : "ghost"}
+                className="rounded-full px-6"
+              >
+                Синий
+              </Button>
+            </div>
+          )}
         </div>
 
         {!showCode ? (
           <>
-            <CalculatorSettings
-              texts={texts}
-              onTextsChange={setTexts}
-              colorScheme={colorScheme}
-              onColorSchemeChange={setColorScheme}
-              designStyle={designStyle}
-              onDesignStyleChange={setDesignStyle}
-              calculatorWidth={calculatorWidth}
-              onCalculatorWidthChange={setCalculatorWidth}
-              sliderSize={sliderSize}
-              onSliderSizeChange={setSliderSize}
-              sliderTrackColor={sliderTrackColor}
-              onSliderTrackColorChange={setSliderTrackColor}
-              loanParams={loanParams}
-              onLoanParamsChange={setLoanParams}
-            />
-            <LoanCalculator
-              texts={texts}
-              colorScheme={colorScheme}
-              designStyle={designStyle}
-              amount={amount}
-              days={days}
-              onAmountChange={setAmount}
-              onDaysChange={setDays}
-              calculatorWidth={calculatorWidth}
-              sliderSize={sliderSize}
-              sliderTrackColor={sliderTrackColor}
-              loanParams={loanParams}
-              onTextsChange={setTexts}
-            />
+            {calculatorType === 'classic' ? (
+              <>
+                <CalculatorSettings
+                  texts={texts}
+                  onTextsChange={setTexts}
+                  colorScheme={colorScheme}
+                  onColorSchemeChange={setColorScheme}
+                  designStyle={designStyle}
+                  onDesignStyleChange={setDesignStyle}
+                  calculatorWidth={calculatorWidth}
+                  onCalculatorWidthChange={setCalculatorWidth}
+                  sliderSize={sliderSize}
+                  onSliderSizeChange={setSliderSize}
+                  sliderTrackColor={sliderTrackColor}
+                  onSliderTrackColorChange={setSliderTrackColor}
+                  loanParams={loanParams}
+                  onLoanParamsChange={setLoanParams}
+                />
+                <LoanCalculator
+                  texts={texts}
+                  colorScheme={colorScheme}
+                  designStyle={designStyle}
+                  amount={amount}
+                  days={days}
+                  onAmountChange={setAmount}
+                  onDaysChange={setDays}
+                  calculatorWidth={calculatorWidth}
+                  sliderSize={sliderSize}
+                  sliderTrackColor={sliderTrackColor}
+                  loanParams={loanParams}
+                  onTextsChange={setTexts}
+                />
+              </>
+            ) : (
+              <>
+                <BlueCalculatorSettings
+                  texts={blueTexts}
+                  onTextsChange={setBlueTexts}
+                  calculatorWidth={blueCalculatorWidth}
+                  onCalculatorWidthChange={setBlueCalculatorWidth}
+                  minAmount={blueMinAmount}
+                  onMinAmountChange={setBlueMinAmount}
+                  maxAmount={blueMaxAmount}
+                  onMaxAmountChange={setBlueMaxAmount}
+                  stepAmount={blueStepAmount}
+                  onStepAmountChange={setBlueStepAmount}
+                  interestRate={blueInterestRate}
+                  onInterestRateChange={setBlueInterestRate}
+                />
+                <BlueCalculator
+                  texts={blueTexts}
+                  amount={blueAmount}
+                  onAmountChange={setBlueAmount}
+                  calculatorWidth={blueCalculatorWidth}
+                  minAmount={blueMinAmount}
+                  maxAmount={blueMaxAmount}
+                  stepAmount={blueStepAmount}
+                  interestRate={blueInterestRate}
+                  onTextsChange={setBlueTexts}
+                />
+              </>
+            )}
           </>
         ) : (
           <EmbedCode
