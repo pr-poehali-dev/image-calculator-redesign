@@ -4,6 +4,7 @@ import CalculatorSettings from '@/components/CalculatorSettings';
 import BlueCalculator from '@/components/BlueCalculator';
 import BlueCalculatorSettings from '@/components/BlueCalculatorSettings';
 import EmbedCode from '@/components/EmbedCode';
+import BlueEmbedCode from '@/components/BlueEmbedCode';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
@@ -233,15 +234,29 @@ const Index = () => {
             )}
           </>
         ) : (
-          <EmbedCode
-            texts={texts}
-            colorScheme={colorScheme}
-            designStyle={designStyle}
-            calculatorWidth={calculatorWidth}
-            sliderSize={sliderSize}
-            sliderTrackColor={sliderTrackColor}
-            loanParams={loanParams}
-          />
+          <>
+            {calculatorType === 'classic' ? (
+              <EmbedCode
+                texts={texts}
+                colorScheme={colorScheme}
+                designStyle={designStyle}
+                calculatorWidth={calculatorWidth}
+                sliderSize={sliderSize}
+                sliderTrackColor={sliderTrackColor}
+                loanParams={loanParams}
+              />
+            ) : (
+              <BlueEmbedCode
+                texts={blueTexts}
+                calculatorWidth={blueCalculatorWidth}
+                minAmount={blueMinAmount}
+                maxAmount={blueMaxAmount}
+                stepAmount={blueStepAmount}
+                interestRate={blueInterestRate}
+                showCharacter={showCharacter}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
