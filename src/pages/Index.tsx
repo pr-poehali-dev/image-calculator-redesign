@@ -137,6 +137,7 @@ const Index = () => {
               sliderSize={sliderSize}
               sliderTrackColor={sliderTrackColor}
               loanParams={loanParams}
+              onTextsChange={setTexts}
             />
           </>
         ) : (

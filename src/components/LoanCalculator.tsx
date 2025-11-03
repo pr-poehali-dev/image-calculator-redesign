@@ -1,5 +1,7 @@
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
+import { Input } from '@/components/ui/input';
 
 interface CalculatorTexts {
   title: string;
@@ -39,9 +41,10 @@ interface LoanCalculatorProps {
   sliderSize: number;
   sliderTrackColor: string;
   loanParams: LoanParams;
+  onTextsChange?: (texts: CalculatorTexts) => void;
 }
 
-const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, sliderTrackColor, loanParams }: LoanCalculatorProps) => {
+const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmountChange, onDaysChange, calculatorWidth, sliderSize, sliderTrackColor, loanParams, onTextsChange }: LoanCalculatorProps) => {
   const colorSchemes: Record<string, { gradient: string; text: string; border: string }> = {
     teal: { gradient: 'from-emerald-400 via-teal-400 to-cyan-400', text: 'text-teal-500', border: 'border-teal-400' },
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
@@ -87,14 +90,54 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
 
   const total = calculateTotal();
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onTextsChange) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onTextsChange({ ...texts, headerImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    if (onTextsChange) {
+      onTextsChange({ ...texts, headerImage: '' });
+    }
+  };
+
   return (
     <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
-      <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden group`}>
         {texts.headerImage && (
           <div className="absolute inset-0" style={{ opacity: (texts.headerImageOpacity || 30) / 100 }}>
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
           </div>
         )}
+        
+        {onTextsChange && (
+          <div className="absolute top-4 right-4 z-20 flex gap-2">
+            <label className="cursor-pointer bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100">
+              <Icon name="Image" size={20} className="text-gray-700" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </label>
+            {texts.headerImage && (
+              <button
+                onClick={handleRemoveImage}
+                className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+              >
+                <Icon name="X" size={20} className="text-gray-700" />
+              </button>
+            )}
+          </div>
+        )}
+        
         <div className="relative z-10">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
