@@ -186,24 +186,19 @@ const BlueCalculator = ({
             </div>
             
             <div className="relative">
-              <div style={{ '--slider-color': sliderColor } as React.CSSProperties}>
-                <Slider
-                  value={[amount]}
-                  onValueChange={(value) => {
-                    onAmountChange(value[0]);
-                    setIsDragging(true);
-                  }}
-                  onValueCommit={() => setIsDragging(false)}
-                  min={minAmount}
-                  max={maxAmount}
-                  step={stepAmount}
-                  className="mb-3 sm:mb-4 blue-calc-slider"
-                  colorScheme="orange"
-                  style={{
-                    '--thumb-color': sliderColor,
-                  } as React.CSSProperties}
-                />
-              </div>
+              <Slider
+                value={[amount]}
+                onValueChange={(value) => {
+                  onAmountChange(value[0]);
+                  setIsDragging(true);
+                }}
+                onValueCommit={() => setIsDragging(false)}
+                min={minAmount}
+                max={maxAmount}
+                step={stepAmount}
+                className="mb-3 sm:mb-4 blue-calc-slider"
+                customColor={sliderColor}
+              />
             </div>
           </div>
 
