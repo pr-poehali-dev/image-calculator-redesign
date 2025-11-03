@@ -217,7 +217,7 @@ const BlueCalculator = ({
           </div>
 
           <Button
-            className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 md:py-7 rounded-xl sm:rounded-2xl font-bold shadow-lg"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 md:py-7 rounded-xl sm:rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
             onClick={() => {
               if (texts.buttonLink) {
                 window.open(texts.buttonLink, '_blank');
