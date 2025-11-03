@@ -88,7 +88,7 @@ const Index = () => {
   const [blueInterestRate, setBlueInterestRate] = useState(20);
   const [showCharacter, setShowCharacter] = useState(true);
   const [blueHeaderGradient, setBlueHeaderGradient] = useState('from-cyan-400 to-blue-500');
-  const [blueSliderColor, setBlueSliderColor] = useState('#fb923c');
+  const [blueSliderColor, setBlueSliderColor] = useState('#3b82f6');
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
