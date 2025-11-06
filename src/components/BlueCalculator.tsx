@@ -28,6 +28,12 @@ interface BlueCalculatorProps {
   onShowCharacterChange?: (show: boolean) => void;
   headerGradient: string;
   sliderColor: string;
+  buttonColor: string;
+  buttonShape: string;
+  formBorderRadius: string;
+  animationType: string;
+  formHeight: number;
+  mobileFormHeight: number;
 }
 
 const BlueCalculator = ({ 
@@ -44,7 +50,13 @@ const BlueCalculator = ({
   showCharacter,
   onShowCharacterChange,
   headerGradient,
-  sliderColor
+  sliderColor,
+  buttonColor,
+  buttonShape,
+  formBorderRadius,
+  animationType,
+  formHeight,
+  mobileFormHeight
 }: BlueCalculatorProps) => {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -88,15 +100,48 @@ const BlueCalculator = ({
 
   const returnAmount = calculateReturn();
 
+  const getAnimationClass = () => {
+    switch (animationType) {
+      case 'slide':
+        return 'animate-slide-in-up';
+      case 'fade':
+        return 'animate-fade-in';
+      case 'bounce':
+        return 'animate-bounce-in';
+      default:
+        return '';
+    }
+  };
+
+  const getFormBorderClass = () => {
+    switch (formBorderRadius) {
+      case 'none':
+        return '';
+      case 'lg':
+        return 'rounded-t-lg sm:rounded-t-lg rounded-b-lg sm:rounded-b-lg';
+      case '2xl':
+        return 'rounded-t-2xl sm:rounded-t-3xl rounded-b-2xl sm:rounded-b-3xl';
+      case '3xl':
+        return 'rounded-t-3xl sm:rounded-t-[2.5rem] rounded-b-3xl sm:rounded-b-[2.5rem]';
+      default:
+        return 'rounded-t-2xl sm:rounded-t-3xl rounded-b-2xl sm:rounded-b-3xl';
+    }
+  };
+
   return (
     <div 
-      className="w-full mx-auto touch-manipulation" 
+      className={`w-full mx-auto touch-manipulation ${getAnimationClass()}`}
       style={{ 
         maxWidth: `${calculatorWidth}px`,
         width: window.innerWidth < 640 ? `${mobileWidth}%` : '100%'
       }}
     >
-      <div className={`bg-gradient-to-br ${headerGradient} rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-6 md:p-8 relative overflow-hidden group min-h-[140px] sm:min-h-[180px]`}>
+      <div 
+        className={`bg-gradient-to-br ${headerGradient} ${getFormBorderClass().split(' ')[0]} ${getFormBorderClass().split(' ')[1]} p-4 sm:p-6 md:p-8 relative overflow-hidden group`}
+        style={{
+          minHeight: window.innerWidth < 640 ? `${mobileFormHeight * 1.4}px` : `${formHeight * 1.8}px`
+        }}
+      >
         {texts.headerImage && (
           <div className="absolute inset-0">
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover opacity-30" />
@@ -170,7 +215,12 @@ const BlueCalculator = ({
         )}
       </div>
 
-      <div className="bg-white rounded-b-2xl sm:rounded-b-3xl shadow-2xl p-4 sm:p-6 md:p-8 relative -mt-4 sm:-mt-8 z-20">
+      <div 
+        className={`bg-white ${getFormBorderClass().split(' ')[2]} ${getFormBorderClass().split(' ')[3]} shadow-2xl p-4 sm:p-6 md:p-8 relative -mt-4 sm:-mt-8 z-20`}
+        style={{
+          minHeight: window.innerWidth < 640 ? `${mobileFormHeight * 4}px` : `${formHeight * 5}px`
+        }}
+      >
         <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg">
           <div className="text-center mb-4 sm:mb-6 md:mb-8">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">
@@ -217,7 +267,7 @@ const BlueCalculator = ({
           </div>
 
           <Button
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 md:py-7 rounded-xl sm:rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+            className={`w-full bg-gradient-to-r ${buttonColor} hover:brightness-110 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 md:py-7 ${buttonShape === 'rounded' ? 'rounded-lg' : buttonShape === 'rounded-xl' ? 'rounded-xl sm:rounded-2xl' : 'rounded-full'} font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]`}
             onClick={() => {
               if (texts.buttonLink) {
                 window.open(texts.buttonLink, '_blank');

@@ -37,6 +37,18 @@ interface BlueCalculatorSettingsProps {
   onHeaderGradientChange: (gradient: string) => void;
   sliderColor: string;
   onSliderColorChange: (color: string) => void;
+  buttonColor: string;
+  onButtonColorChange: (color: string) => void;
+  buttonShape: string;
+  onButtonShapeChange: (shape: string) => void;
+  formBorderRadius: string;
+  onFormBorderRadiusChange: (radius: string) => void;
+  animationType: string;
+  onAnimationTypeChange: (type: string) => void;
+  formHeight: number;
+  onFormHeightChange: (height: number) => void;
+  mobileFormHeight: number;
+  onMobileFormHeightChange: (height: number) => void;
 }
 
 const BlueCalculatorSettings = ({
@@ -60,6 +72,18 @@ const BlueCalculatorSettings = ({
   onHeaderGradientChange,
   sliderColor,
   onSliderColorChange,
+  buttonColor,
+  onButtonColorChange,
+  buttonShape,
+  onButtonShapeChange,
+  formBorderRadius,
+  onFormBorderRadiusChange,
+  animationType,
+  onAnimationTypeChange,
+  formHeight,
+  onFormHeightChange,
+  mobileFormHeight,
+  onMobileFormHeightChange,
 }: BlueCalculatorSettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -110,6 +134,12 @@ const BlueCalculatorSettings = ({
       showCharacter,
       headerGradient,
       sliderColor,
+      buttonColor,
+      buttonShape,
+      formBorderRadius,
+      animationType,
+      formHeight,
+      mobileFormHeight,
       savedAt: new Date().toISOString(),
     };
     
@@ -143,6 +173,12 @@ const BlueCalculatorSettings = ({
     onShowCharacterChange(true);
     onHeaderGradientChange('from-cyan-400 to-blue-500');
     onSliderColorChange('#fb923c');
+    onButtonColorChange('from-blue-500 to-blue-600');
+    onButtonShapeChange('rounded');
+    onFormBorderRadiusChange('2xl');
+    onAnimationTypeChange('slide');
+    onFormHeightChange(100);
+    onMobileFormHeightChange(100);
     
     toast({
       title: "🔄 Настройки сброшены",
@@ -308,6 +344,189 @@ const BlueCalculatorSettings = ({
                   )}
                 </>
               )}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Palette" size={20} />
+              Дизайн кнопки
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Цвет кнопки (градиент)</Label>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <button
+                    onClick={() => onButtonColorChange('from-blue-500 to-blue-600')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold ${buttonColor === 'from-blue-500 to-blue-600' ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+                  >
+                    Синий
+                  </button>
+                  <button
+                    onClick={() => onButtonColorChange('from-red-500 to-pink-500')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold ${buttonColor === 'from-red-500 to-pink-500' ? 'ring-2 ring-offset-2 ring-red-500' : ''}`}
+                  >
+                    Красный
+                  </button>
+                  <button
+                    onClick={() => onButtonColorChange('from-green-500 to-emerald-600')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold ${buttonColor === 'from-green-500 to-emerald-600' ? 'ring-2 ring-offset-2 ring-green-500' : ''}`}
+                  >
+                    Зелёный
+                  </button>
+                  <button
+                    onClick={() => onButtonColorChange('from-purple-500 to-indigo-600')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold ${buttonColor === 'from-purple-500 to-indigo-600' ? 'ring-2 ring-offset-2 ring-purple-500' : ''}`}
+                  >
+                    Фиолетовый
+                  </button>
+                  <button
+                    onClick={() => onButtonColorChange('from-orange-500 to-amber-600')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-600 text-white font-semibold ${buttonColor === 'from-orange-500 to-amber-600' ? 'ring-2 ring-offset-2 ring-orange-500' : ''}`}
+                  >
+                    Оранжевый
+                  </button>
+                  <button
+                    onClick={() => onButtonColorChange('from-gray-700 to-gray-900')}
+                    className={`p-3 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 text-white font-semibold ${buttonColor === 'from-gray-700 to-gray-900' ? 'ring-2 ring-offset-2 ring-gray-700' : ''}`}
+                  >
+                    Чёрный
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <Label>Форма кнопки</Label>
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  <button
+                    onClick={() => onButtonShapeChange('rounded')}
+                    className={`p-3 rounded-lg border-2 ${buttonShape === 'rounded' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-8 bg-blue-500 rounded"></div>
+                    <p className="text-xs mt-1">Обычная</p>
+                  </button>
+                  <button
+                    onClick={() => onButtonShapeChange('rounded-xl')}
+                    className={`p-3 rounded-lg border-2 ${buttonShape === 'rounded-xl' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-8 bg-blue-500 rounded-xl"></div>
+                    <p className="text-xs mt-1">Средняя</p>
+                  </button>
+                  <button
+                    onClick={() => onButtonShapeChange('rounded-full')}
+                    className={`p-3 rounded-lg border-2 ${buttonShape === 'rounded-full' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-8 bg-blue-500 rounded-full"></div>
+                    <p className="text-xs mt-1">Круглая</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Square" size={20} />
+              Форма калькулятора
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Скругление углов формы</Label>
+                <div className="grid grid-cols-4 gap-2 mt-2">
+                  <button
+                    onClick={() => onFormBorderRadiusChange('none')}
+                    className={`p-3 border-2 ${formBorderRadius === 'none' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-12 bg-gradient-to-br from-cyan-400 to-blue-500"></div>
+                    <p className="text-xs mt-1">Без углов</p>
+                  </button>
+                  <button
+                    onClick={() => onFormBorderRadiusChange('lg')}
+                    className={`p-3 rounded-lg border-2 ${formBorderRadius === 'lg' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg"></div>
+                    <p className="text-xs mt-1">Малые</p>
+                  </button>
+                  <button
+                    onClick={() => onFormBorderRadiusChange('2xl')}
+                    className={`p-3 rounded-lg border-2 ${formBorderRadius === '2xl' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl"></div>
+                    <p className="text-xs mt-1">Средние</p>
+                  </button>
+                  <button
+                    onClick={() => onFormBorderRadiusChange('3xl')}
+                    className={`p-3 rounded-lg border-2 ${formBorderRadius === '3xl' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <div className="w-full h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-3xl"></div>
+                    <p className="text-xs mt-1">Большие</p>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <Label>Высота формы на ПК (%)</Label>
+                <Input
+                  type="number"
+                  min="80"
+                  max="150"
+                  value={formHeight}
+                  onChange={(e) => onFormHeightChange(Number(e.target.value))}
+                />
+              </div>
+
+              <div>
+                <Label>Высота формы на мобильной (%)</Label>
+                <Input
+                  type="number"
+                  min="80"
+                  max="150"
+                  value={mobileFormHeight}
+                  onChange={(e) => onMobileFormHeightChange(Number(e.target.value))}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Icon name="Sparkles" size={20} />
+              Анимации
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Тип анимации при появлении</Label>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <button
+                    onClick={() => onAnimationTypeChange('slide')}
+                    className={`p-3 rounded-lg border-2 ${animationType === 'slide' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <Icon name="ArrowRight" className="mx-auto mb-1" />
+                    <p className="text-xs">Скольжение</p>
+                  </button>
+                  <button
+                    onClick={() => onAnimationTypeChange('fade')}
+                    className={`p-3 rounded-lg border-2 ${animationType === 'fade' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <Icon name="Eye" className="mx-auto mb-1" />
+                    <p className="text-xs">Появление</p>
+                  </button>
+                  <button
+                    onClick={() => onAnimationTypeChange('bounce')}
+                    className={`p-3 rounded-lg border-2 ${animationType === 'bounce' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <Icon name="ChevronsUp" className="mx-auto mb-1" />
+                    <p className="text-xs">Подпрыгивание</p>
+                  </button>
+                  <button
+                    onClick={() => onAnimationTypeChange('none')}
+                    className={`p-3 rounded-lg border-2 ${animationType === 'none' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
+                  >
+                    <Icon name="Minus" className="mx-auto mb-1" />
+                    <p className="text-xs">Без анимации</p>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

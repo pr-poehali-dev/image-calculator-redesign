@@ -89,6 +89,12 @@ const Index = () => {
   const [showCharacter, setShowCharacter] = useState(true);
   const [blueHeaderGradient, setBlueHeaderGradient] = useState('from-cyan-400 to-blue-500');
   const [blueSliderColor, setBlueSliderColor] = useState('#3b82f6');
+  const [blueButtonColor, setBlueButtonColor] = useState('from-blue-500 to-blue-600');
+  const [blueButtonShape, setBlueButtonShape] = useState('rounded-xl');
+  const [blueFormBorderRadius, setBlueFormBorderRadius] = useState('2xl');
+  const [blueAnimationType, setBlueAnimationType] = useState('slide');
+  const [blueFormHeight, setBlueFormHeight] = useState(100);
+  const [blueMobileFormHeight, setBlueMobileFormHeight] = useState(100);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('calculatorSettings');
@@ -121,6 +127,12 @@ const Index = () => {
         if (settings.showCharacter !== undefined) setShowCharacter(settings.showCharacter);
         if (settings.headerGradient) setBlueHeaderGradient(settings.headerGradient);
         if (settings.sliderColor) setBlueSliderColor(settings.sliderColor);
+        if (settings.buttonColor) setBlueButtonColor(settings.buttonColor);
+        if (settings.buttonShape) setBlueButtonShape(settings.buttonShape);
+        if (settings.formBorderRadius) setBlueFormBorderRadius(settings.formBorderRadius);
+        if (settings.animationType) setBlueAnimationType(settings.animationType);
+        if (settings.formHeight) setBlueFormHeight(settings.formHeight);
+        if (settings.mobileFormHeight) setBlueMobileFormHeight(settings.mobileFormHeight);
       } catch (e) {
         console.error('Ошибка загрузки настроек синего калькулятора:', e);
       }
@@ -228,6 +240,18 @@ const Index = () => {
                   onHeaderGradientChange={setBlueHeaderGradient}
                   sliderColor={blueSliderColor}
                   onSliderColorChange={setBlueSliderColor}
+                  buttonColor={blueButtonColor}
+                  onButtonColorChange={setBlueButtonColor}
+                  buttonShape={blueButtonShape}
+                  onButtonShapeChange={setBlueButtonShape}
+                  formBorderRadius={blueFormBorderRadius}
+                  onFormBorderRadiusChange={setBlueFormBorderRadius}
+                  animationType={blueAnimationType}
+                  onAnimationTypeChange={setBlueAnimationType}
+                  formHeight={blueFormHeight}
+                  onFormHeightChange={setBlueFormHeight}
+                  mobileFormHeight={blueMobileFormHeight}
+                  onMobileFormHeightChange={setBlueMobileFormHeight}
                 />
                 <BlueCalculator
                   texts={blueTexts}
@@ -244,6 +268,12 @@ const Index = () => {
                   onShowCharacterChange={setShowCharacter}
                   headerGradient={blueHeaderGradient}
                   sliderColor={blueSliderColor}
+                  buttonColor={blueButtonColor}
+                  buttonShape={blueButtonShape}
+                  formBorderRadius={blueFormBorderRadius}
+                  animationType={blueAnimationType}
+                  formHeight={blueFormHeight}
+                  mobileFormHeight={blueMobileFormHeight}
                 />
               </>
             )}
