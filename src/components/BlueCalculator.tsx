@@ -222,11 +222,11 @@ const BlueCalculator = ({
         }}
       >
         <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg">
-          <div className="text-center mb-4 sm:mb-6 md:mb-8">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">
-              Заём онлайн на карту <span className="text-red-500">от 0%</span>
+          <div className="text-center mb-4 sm:mb-6 md:mb-8 px-2">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 leading-tight">
+              Заём онлайн на карту <span className="text-red-500 whitespace-nowrap">от 0%</span>
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-gray-500">При условии возврата займа в срок</p>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-500">При условии возврата займа в срок</p>
           </div>
 
           <div className="mb-4 sm:mb-6 md:mb-8">
