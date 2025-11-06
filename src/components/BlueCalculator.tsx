@@ -216,13 +216,12 @@ const BlueCalculator = ({
       </div>
 
       <div 
-        className={`bg-white ${getFormBorderClass().split(' ')[2]} ${getFormBorderClass().split(' ')[3]} shadow-2xl p-4 sm:p-6 md:p-8 relative -mt-4 sm:-mt-8 z-20`}
+        className={`bg-white ${getFormBorderClass().split(' ')[2]} ${getFormBorderClass().split(' ')[3]} shadow-2xl p-6 sm:p-8 md:p-10 relative -mt-4 sm:-mt-8 z-20`}
         style={{
           minHeight: window.innerWidth < 640 ? `${mobileFormHeight * 4}px` : `${formHeight * 5}px`
         }}
       >
-        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg">
-          <div className="text-center mb-4 sm:mb-6 md:mb-8 px-2">
+          <div className="text-center mb-6 sm:mb-8 md:mb-10">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 leading-tight">
               Заём онлайн на карту <span className="text-red-500 whitespace-nowrap">от 0%</span>
             </h2>
@@ -276,7 +275,6 @@ const BlueCalculator = ({
           >
             {texts.buttonText}
           </Button>
-        </div>
       </div>
     </div>
   );
