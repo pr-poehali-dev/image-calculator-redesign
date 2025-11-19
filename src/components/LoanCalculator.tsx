@@ -50,7 +50,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
     purple: { gradient: 'from-purple-400 via-violet-400 to-indigo-400', text: 'text-violet-500', border: 'border-violet-400' },
     orange: { gradient: 'from-orange-400 via-amber-400 to-yellow-400', text: 'text-orange-500', border: 'border-orange-400' },
     pink: { gradient: 'from-pink-400 via-rose-400 to-red-400', text: 'text-rose-500', border: 'border-rose-400' },
-    blue: { gradient: 'from-blue-400 via-sky-400 to-cyan-400', text: 'text-blue-500', border: 'border-blue-400' },
+    blue: { gradient: 'from-blue-500 via-blue-600 to-indigo-600', text: 'text-blue-600', border: 'border-blue-500' },
     green: { gradient: 'from-green-400 via-emerald-400 to-teal-400', text: 'text-green-500', border: 'border-green-400' },
   };
 

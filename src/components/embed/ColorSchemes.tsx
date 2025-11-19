@@ -9,7 +9,7 @@ export const colorSchemes: Record<string, ColorScheme> = {
   purple: { cssGradient: '#a78bfa, #8b5cf6, #6366f1', cssText: '#8b5cf6', cssBorder: '#8b5cf6' },
   orange: { cssGradient: '#fb923c, #fbbf24, #facc15', cssText: '#f97316', cssBorder: '#f97316' },
   pink: { cssGradient: '#f472b6, #fb7185, #ef4444', cssText: '#fb7185', cssBorder: '#fb7185' },
-  blue: { cssGradient: '#60a5fa, #38bdf8, #22d3ee', cssText: '#3b82f6', cssBorder: '#3b82f6' },
+  blue: { cssGradient: '#3b82f6, #2563eb, #4f46e5', cssText: '#2563eb', cssBorder: '#3b82f6' },
   green: { cssGradient: '#4ade80, #34d399, #14b8a6', cssText: '#22c55e', cssBorder: '#22c55e' },
 };
 
