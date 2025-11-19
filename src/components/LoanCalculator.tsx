@@ -109,7 +109,7 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
 
   return (
     <div className="w-full mx-auto touch-manipulation" style={{ maxWidth: `${calculatorWidth}px` }}>
-      <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-6 sm:p-10 md:p-12 text-center relative overflow-hidden group`}>
+      <div className={`bg-gradient-to-br ${headerGradient} ${currentStyle.roundedTop} p-5 sm:p-10 md:p-12 text-center relative overflow-hidden group`}>
         {texts.headerImage && (
           <div className="absolute inset-0" style={{ opacity: (texts.headerImageOpacity || 30) / 100 }}>
             <img src={texts.headerImage} alt="Header background" className="w-full h-full object-cover" />
@@ -117,9 +117,9 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
         )}
         
         {onTextsChange && (
-          <div className="absolute top-4 right-4 z-20 flex gap-2">
-            <label className="cursor-pointer bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100">
-              <Icon name="Image" size={20} className="text-gray-700" />
+          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex gap-2">
+            <label className="cursor-pointer bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100">
+              <Icon name="Image" size={18} className="text-gray-700 sm:w-5 sm:h-5" />
               <input
                 type="file"
                 accept="image/*"
@@ -130,32 +130,32 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
             {texts.headerImage && (
               <button
                 onClick={handleRemoveImage}
-                className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                className="bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100"
               >
-                <Icon name="X" size={20} className="text-gray-700" />
+                <Icon name="X" size={18} className="text-gray-700 sm:w-5 sm:h-5" />
               </button>
             )}
           </div>
         )}
         
         <div className="relative z-10">
-          <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-5">
+          <div className="text-center">
+            <h1 className="text-xl sm:text-3xl md:text-5xl font-bold text-white mb-2 sm:mb-4 leading-tight px-2">
               {texts.title}
             </h1>
-            <p className="text-lg sm:text-2xl md:text-3xl text-white font-medium">
+            <p className="text-base sm:text-xl md:text-3xl text-white font-medium px-2">
               {texts.subtitle}
             </p>
           </div>
         </div>
       </div>
 
-      <div className={`bg-white ${currentStyle.roundedBottom} ${currentStyle.shadow} p-5 sm:p-8 md:p-10`}>
-        <div className="space-y-6 sm:space-y-8">
-          <div>
-            <div className="flex justify-between items-center mb-3 sm:mb-4">
-              <label className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900">{texts.amountLabel}</label>
-              <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${currentColor.text}`}>
+      <div className={`bg-white ${currentStyle.roundedBottom} ${currentStyle.shadow} p-4 sm:p-8 md:p-10`}>
+        <div className="space-y-5 sm:space-y-8">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 sm:p-6 border-2 border-blue-100">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 sm:mb-4 gap-2">
+              <label className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-900">{texts.amountLabel}</label>
+              <div className={`text-3xl sm:text-3xl md:text-4xl font-bold ${currentColor.text} bg-white rounded-xl px-4 py-2 shadow-sm`}>
                 {amount.toLocaleString('ru-RU')} ₽
               </div>
             </div>
@@ -171,16 +171,19 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 trackColor={sliderTrackColor}
               />
             </div>
-            <div className="text-sm sm:text-base text-gray-400">
-              {texts.amountHint}
-            </div>
+            {texts.amountHint && (
+              <div className="flex items-start gap-2 text-sm sm:text-base text-gray-600 bg-white/70 rounded-lg p-3 mt-3">
+                <Icon name="Info" size={18} className="flex-shrink-0 mt-0.5 text-blue-500" />
+                <span>{texts.amountHint}</span>
+              </div>
+            )}
           </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-3 sm:mb-4">
-              <label className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900">{texts.daysLabel}</label>
-              <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${currentColor.text}`}>
-                {days} дней
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 sm:p-6 border-2 border-blue-100">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 sm:mb-4 gap-2">
+              <label className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-900">{texts.daysLabel}</label>
+              <div className={`text-3xl sm:text-3xl md:text-4xl font-bold ${currentColor.text} bg-white rounded-xl px-4 py-2 shadow-sm`}>
+                {days} дн.
               </div>
             </div>
             <div style={{ transform: `scale(${sliderSize / 100})`, transformOrigin: 'left center' }}>
@@ -195,44 +198,53 @@ const LoanCalculator = ({ texts, colorScheme, designStyle, amount, days, onAmoun
                 trackColor={sliderTrackColor}
               />
             </div>
-            <div className="text-sm sm:text-base text-gray-400">
-              {texts.daysHint}
-            </div>
+            {texts.daysHint && (
+              <div className="flex items-start gap-2 text-sm sm:text-base text-gray-600 bg-white/70 rounded-lg p-3 mt-3">
+                <Icon name="Info" size={18} className="flex-shrink-0 mt-0.5 text-blue-500" />
+                <span>{texts.daysHint}</span>
+              </div>
+            )}
           </div>
 
-          {texts.button1Link ? (
-            <a 
-              href={texts.button1Link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} border-3 sm:border-4 ${currentColor.border} bg-white ${currentColor.text} hover:bg-opacity-10 transition-all duration-200 shadow-lg flex items-center justify-center no-underline`}
-            >
-              {texts.button1Text}
-            </a>
-          ) : (
-            <Button
-              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} border-3 sm:border-4 ${currentColor.border} bg-white ${currentColor.text} hover:bg-opacity-10 transition-all duration-200 shadow-lg`}
-            >
-              {texts.button1Text}
-            </Button>
-          )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {texts.button1Link ? (
+              <a 
+                href={texts.button1Link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`w-full h-14 sm:h-16 md:h-20 text-base sm:text-lg md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:shadow-xl active:scale-95 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 no-underline`}
+              >
+                <Icon name="ArrowRight" size={20} className="sm:w-6 sm:h-6" />
+                <span>{texts.button1Text}</span>
+              </a>
+            ) : (
+              <Button
+                className={`w-full h-14 sm:h-16 md:h-20 text-base sm:text-lg md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:shadow-xl active:scale-95 transition-all duration-200 shadow-lg flex items-center justify-center gap-2`}
+              >
+                <Icon name="ArrowRight" size={20} className="sm:w-6 sm:h-6" />
+                <span>{texts.button1Text}</span>
+              </Button>
+            )}
 
-          {texts.button2Link ? (
-            <a 
-              href={texts.button2Link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation flex items-center justify-center no-underline`}
-            >
-              {texts.button2Text} {total.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
-            </a>
-          ) : (
-            <Button 
-              className={`w-full h-14 sm:h-16 md:h-20 text-lg sm:text-xl md:text-2xl font-bold ${currentStyle.rounded} bg-gradient-to-r ${currentColor.gradient} text-white hover:opacity-90 active:scale-[0.98] shadow-lg transition-all duration-200 touch-manipulation`}
-            >
-              {texts.button2Text} {total.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
-            </Button>
-          )}
+            {texts.button2Link ? (
+              <a 
+                href={texts.button2Link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`w-full h-14 sm:h-16 md:h-20 text-base sm:text-lg md:text-2xl font-bold ${currentStyle.rounded} border-3 ${currentColor.border} bg-white ${currentColor.text} hover:bg-blue-50 active:scale-95 shadow-lg transition-all duration-200 touch-manipulation flex items-center justify-center gap-2 no-underline`}
+              >
+                <Icon name="Calculator" size={20} className="sm:w-6 sm:h-6" />
+                <span>{texts.button2Text}</span>
+              </a>
+            ) : (
+              <Button 
+                className={`w-full h-14 sm:h-16 md:h-20 text-base sm:text-lg md:text-2xl font-bold ${currentStyle.rounded} border-3 ${currentColor.border} bg-white ${currentColor.text} hover:bg-blue-50 active:scale-95 shadow-lg transition-all duration-200 touch-manipulation flex items-center justify-center gap-2`}
+              >
+                <Icon name="Calculator" size={20} className="sm:w-6 sm:h-6" />
+                <span>{texts.button2Text}</span>
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
